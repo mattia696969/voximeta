@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offerta — Voximeta</title>
+<meta name="description" content="Guarda come funziona il tuo Brand Audit gratuito.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ================= NAVBAR (liquid glass, centered) ================= -->
+<header class="navbar">
+  <div class="nav-pill" id="navPill">
+    <a href="https://www.instagram.com/voximeta/" target="_blank" rel="noopener" class="nav-logo-avatar" aria-label="Voximeta su Instagram">
+      <span>V</span>
+      <img src="assetts/fotoceo.jpg" alt="Voximeta">
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link"><span class="nl-default">Home</span><span class="nl-hover">Home</span></a></li>
+      <li class="nav-item-badge">
+        <a href="analisi-brand.html" class="nav-link"><span class="nl-default">Offerta</span><span class="nl-hover">Offerta</span></a>
+        <span class="badge-tag">GRATIS PER POCO TEMPO</span>
+      </li>
+      <li><a href="progetti.html" class="nav-link"><span class="nl-default">Progetti</span><span class="nl-hover">Progetti</span></a></li>
+      <li><a href="#" class="nav-link js-waitlist-link"><span class="nl-default">Entra in waitlist</span><span class="nl-hover">Entra in waitlist</span></a></li>
+    </ul>
+
+    <button class="nav-burger" id="navBurger" aria-label="Apri menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="analisi-brand.html">Offerta</a>
+    <a href="progetti.html">Progetti</a>
+    <a href="#" class="js-waitlist-link">Entra in waitlist</a>
+  </div>
+</header>
+
+<!-- ================= VIDEO / AUDIT ================= -->
+<section id="audit">
+  <div class="container">
+    <div class="audit-head reveal">
+      <h2 class="section-title">Guarda come funziona il tuo Brand Audit gratuito</h2>
+      <p class="section-sub" style="margin:0 auto 50px;">In meno di 4 minuti ti spieghiamo esattamente cosa analizziamo e come funziona il processo. Il video non si può saltare in avanti: guardalo fino alla fine per sbloccare la richiesta.</p>
+    </div>
+
+    <div class="video-wrap reveal d1">
+      <div class="video-frame" id="videoFrame">
+        <video id="auditVideo" playsinline preload="metadata" controlslist="nodownload noremoteplayback" disablepictureinpicture>
+          <source src="assetts/035.mp4" type="video/mp4">
+        </video>
+        <div class="video-shield" id="videoShield"></div>
+        <div class="video-controls">
+          <button type="button" class="vc-btn" id="playPauseBtn" aria-label="Play/Pausa">
+            <svg id="iconPlay" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"></polygon></svg>
+            <svg id="iconPause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="5" y="4" width="5" height="16"></rect><rect x="14" y="4" width="5" height="16"></rect></svg>
+          </button>
+          <div class="vc-timer" id="vcTimer">0:00</div>
+          <div class="vc-volume">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path></svg>
+            <input type="range" id="volumeSlider" min="5" max="100" value="70" aria-label="Volume">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="audit-status-row reveal d2">
+      <span class="lock-icon" id="lockIcon">🔒</span>
+      <span class="video-timer-small" id="videoTimerSmall">Guarda il video per sbloccare</span>
+      <button type="button" id="auditCtaBtn" class="btn-audit-3click">
+        <span class="btn-3click-label">Richiedi il Brand Audit</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container footer-inner-new reveal">
+    <a href="mailto:voximeta@gmail.com" class="footer-cta">Domande? Clicca qui, è gratis</a>
+    <a href="mailto:voximeta@gmail.com" class="footer-email">voximeta@gmail.com</a>
+    <p class="footer-credit">Mattia Russo · P.IVA 07422630827</p>
+  </div>
+</footer>
+
+<!-- ================= MODAL: MULTI-STEP BRAND AUDIT FORM ================= -->
+<div class="modal-backdrop" id="auditModal">
+  <div class="modal-card">
+    <div class="fs-page-indicator" id="fsPageIndicator">1/6</div>
+
+    <form id="auditForm" novalidate>
+      <input type="hidden" name="access_key" value="">
+      <input type="hidden" name="subject" value="Nuova richiesta Brand Audit — Voximeta">
+      <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off">
+
+      <div class="fs-step active" data-step="1">
+        <label for="af-name">Nome intero</label>
+        <input type="text" id="af-name" name="full_name" placeholder="es. Mattia Russo" data-label="Nome intero">
+      </div>
+      <div class="fs-step" data-step="2">
+        <label for="af-email">Email</label>
+        <input type="email" id="af-email" name="email" placeholder="es. mattia@tuodominio.com" data-label="Email">
+      </div>
+      <div class="fs-step" data-step="3">
+        <label for="af-phone">Numero WhatsApp</label>
+        <input type="tel" id="af-phone" name="phone" placeholder="+39 ..." data-label="Numero WhatsApp">
+      </div>
+      <div class="fs-step" data-step="4">
+        <label for="af-social">Instagram / TikTok / YouTube</label>
+        <input type="text" id="af-social" name="social" placeholder="@tuonome o link al canale" data-label="Canale social">
+      </div>
+      <div class="fs-step" data-step="5">
+        <label for="af-business">Cosa vendi? (Attività/Prodotto)</label>
+        <input type="text" id="af-business" name="business" placeholder="es. vendo corsi di fitness" data-label="Attività">
+      </div>
+      <div class="fs-step" data-step="6">
+        <label for="af-why">Perché vuoi un Brand Audit da Voximeta?</label>
+        <textarea id="af-why" name="why" placeholder="es. voglio capire come viene percepito il mio brand..." data-label="Motivazione"></textarea>
+      </div>
+
+      <div class="fs-error" id="fsError"></div>
+
+      <div class="fs-nav" id="fsNav">
+        <button type="button" class="fs-prev" id="fsPrev" aria-label="Indietro">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </button>
+        <button type="button" class="fs-next" id="fsNext">Avanti</button>
+      </div>
+    </form>
+
+    <div class="fs-success" id="fsSuccess">
+      <p>Riceverai il tuo Brand Audit entro 48 ore. Controlla la tua email!</p>
+      <button type="button" class="btn-close-modal" id="btnCloseModal">Chiudi</button>
+    </div>
+  </div>
+</div>
+
+<script src="main.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var video = document.getElementById("auditVideo");
+  var playPauseBtn = document.getElementById("playPauseBtn");
+  var iconPlay = document.getElementById("iconPlay");
+  var iconPause = document.getElementById("iconPause");
+  var vcTimer = document.getElementById("vcTimer");
+  var volumeSlider = document.getElementById("volumeSlider");
+  var videoShield = document.getElementById("videoShield");
+  var videoFrame = document.getElementById("videoFrame");
+  var lockIcon = document.getElementById("lockIcon");
+  var videoTimerSmall = document.getElementById("videoTimerSmall");
+  var auditCtaBtn = document.getElementById("auditCtaBtn");
+  var btnLabel = auditCtaBtn.querySelector(".btn-3click-label");
+
+  var lastAllowedTime = 0;
+
+  function formatTime(sec){
+    sec = Math.max(0, Math.round(sec || 0));
+    var m = Math.floor(sec / 60);
+    var s = sec % 60;
+    return m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+  video.volume = 0.7;
+
+  video.addEventListener("timeupdate", function(){
+    if(!video.seeking){ lastAllowedTime = video.currentTime; }
+    vcTimer.textContent = formatTime(video.currentTime);
+    if(!video.ended){
+      videoTimerSmall.textContent = formatTime(video.duration - video.currentTime) + " rimanenti";
+    }
+  });
+  video.addEventListener("seeking", function(){
+    if(video.currentTime > lastAllowedTime + 1){
+      video.currentTime = lastAllowedTime;
+    }
+  });
+  video.addEventListener("play", function(){
+    iconPlay.style.display = "none";
+    iconPause.style.display = "block";
+  });
+  video.addEventListener("pause", function(){
+    iconPlay.style.display = "block";
+    iconPause.style.display = "none";
+  });
+  video.addEventListener("ended", function(){
+    iconPlay.style.display = "block";
+    iconPause.style.display = "none";
+    lockIcon.textContent = "🔓";
+    lockIcon.classList.add("unlocked");
+    videoTimerSmall.textContent = "Video completato";
+    auditCtaBtn.classList.add("unlocked");
+  });
+
+  function togglePlay(){
+    if(video.paused){ video.play(); } else { video.pause(); }
+  }
+  playPauseBtn.addEventListener("click", togglePlay);
+  videoShield.addEventListener("click", togglePlay);
+  videoFrame.addEventListener("contextmenu", function(e){ e.preventDefault(); });
+
+  volumeSlider.addEventListener("input", function(){
+    var val = Math.max(5, parseInt(volumeSlider.value, 10) || 5);
+    volumeSlider.value = val;
+    video.volume = val / 100;
+    video.muted = false;
+  });
+
+  /* ---------- 3-click confirm button ---------- */
+  var CLICK_TEXTS = [
+    "Richiedi il Brand Audit",
+    "Sei sicuro?",
+    "Vuoi veramente migliorare il tuo brand?",
+    "Clicca per confermare"
+  ];
+  var clickCount = 0;
+
+  function fadeSwapText(el, newText){
+    el.classList.add("fading");
+    setTimeout(function(){
+      el.textContent = newText;
+      el.classList.remove("fading");
+    }, 200);
+  }
+
+  auditCtaBtn.addEventListener("click", function(){
+    if(!auditCtaBtn.classList.contains("unlocked")) return;
+    clickCount++;
+    fadeSwapText(btnLabel, CLICK_TEXTS[Math.min(clickCount, CLICK_TEXTS.length - 1)]);
+    if(clickCount >= 3){
+      setTimeout(openModal, 350);
+    }
+  });
+
+  /* ---------- Multi-step modal ---------- */
+  var modal = document.getElementById("auditModal");
+  var form = document.getElementById("auditForm");
+  var steps = form.querySelectorAll(".fs-step");
+  var totalSteps = steps.length;
+  var currentStep = 1;
+  var pageIndicator = document.getElementById("fsPageIndicator");
+  var prevBtn = document.getElementById("fsPrev");
+  var nextBtn = document.getElementById("fsNext");
+  var fsNav = document.getElementById("fsNav");
+  var fsError = document.getElementById("fsError");
+  var fsSuccess = document.getElementById("fsSuccess");
+
+  var FIELD_MAP = {
+    1: {name:"full_name", validator: VoxValidators.fullName},
+    2: {name:"email", validator: VoxValidators.email},
+    3: {name:"phone", validator: VoxValidators.phone},
+    4: {name:"social", validator: VoxValidators.social},
+    5: {name:"business", validator: VoxValidators.shortText},
+    6: {name:"why", validator: VoxValidators.longText}
+  };
+
+  function showStep(n){
+    steps.forEach(function(s){
+      s.classList.toggle("active", parseInt(s.dataset.step, 10) === n);
+    });
+    pageIndicator.textContent = n + "/" + totalSteps;
+    prevBtn.classList.toggle("show", n > 1);
+    fsNav.classList.toggle("final", n === totalSteps);
+    nextBtn.textContent = n === totalSteps ? "Invia richiesta" : "Avanti";
+    fsError.textContent = "";
+  }
+
+  function openModal(){
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeModal(){
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+    currentStep = 1;
+    showStep(1);
+    form.reset();
+    form.style.display = "";
+    fsSuccess.style.display = "none";
+    clickCount = 0;
+    btnLabel.textContent = CLICK_TEXTS[0];
+  }
+
+  prevBtn.addEventListener("click", function(){
+    if(currentStep > 1){
+      currentStep--;
+      showStep(currentStep);
+    }
+  });
+
+  nextBtn.addEventListener("click", function(){
+    var cfg = FIELD_MAP[currentStep];
+    var field = form.querySelector('[name="' + cfg.name + '"]');
+    if(!cfg.validator(field.value)){
+      fsError.textContent = 'Controlla "' + (field.dataset.label || cfg.name) + '": la risposta non sembra completa o pertinente.';
+      field.focus();
+      return;
+    }
+    if(currentStep < totalSteps){
+      currentStep++;
+      showStep(currentStep);
+    } else {
+      submitForm();
+    }
+  });
+
+  function submitForm(){
+    var honeypot = form.querySelector(".hp-field");
+    if(honeypot && honeypot.checked){
+      form.style.display = "none";
+      fsSuccess.style.display = "block";
+      return;
+    }
+    nextBtn.disabled = true;
+    nextBtn.textContent = "Invio in corso...";
+    var payload = {};
+    new FormData(form).forEach(function(value, key){ payload[key] = value; });
+
+    submitToWeb3Forms(payload).then(function(ok){
+      nextBtn.disabled = false;
+      if(ok){
+        form.style.display = "none";
+        fsSuccess.style.display = "block";
+      } else {
+        nextBtn.textContent = "Invia richiesta";
+        fsError.textContent = "Errore di invio, riprova o scrivici a voximeta@gmail.com.";
+      }
+    });
+  }
+
+  document.getElementById("btnCloseModal").addEventListener("click", closeModal);
+  /* Intentionally no backdrop-click / Escape close: the modal only
+     closes via the success screen's "Chiudi" button, per spec. */
+})();
+</script>
+
+</body>
+</html>

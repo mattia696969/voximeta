@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Progetti — Voximeta</title>
+<meta name="description" content="Case study e contenuti realizzati da Voximeta.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ================= NAVBAR (liquid glass, centered) ================= -->
+<header class="navbar">
+  <div class="nav-pill" id="navPill">
+    <a href="https://www.instagram.com/voximeta/" target="_blank" rel="noopener" class="nav-logo-avatar" aria-label="Voximeta su Instagram">
+      <span>V</span>
+      <img src="assetts/fotoceo.jpg" alt="Voximeta">
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link"><span class="nl-default">Home</span><span class="nl-hover">Home</span></a></li>
+      <li class="nav-item-badge">
+        <a href="analisi-brand.html" class="nav-link"><span class="nl-default">Offerta</span><span class="nl-hover">Offerta</span></a>
+        <span class="badge-tag">GRATIS PER POCO TEMPO</span>
+      </li>
+      <li><a href="progetti.html" class="nav-link"><span class="nl-default">Progetti</span><span class="nl-hover">Progetti</span></a></li>
+      <li><a href="#" class="nav-link js-waitlist-link"><span class="nl-default">Entra in waitlist</span><span class="nl-hover">Entra in waitlist</span></a></li>
+    </ul>
+
+    <button class="nav-burger" id="navBurger" aria-label="Apri menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="analisi-brand.html">Offerta</a>
+    <a href="progetti.html">Progetti</a>
+    <a href="#" class="js-waitlist-link">Entra in waitlist</a>
+  </div>
+</header>
+
+<!-- ================= PROGETTI ================= -->
+<section id="projects">
+  <div class="container">
+    <div class="projects-head reveal">
+      <h1>Progetti</h1>
+    </div>
+
+    <div class="reels-label reveal">Reel &amp; Ads</div>
+    <div class="reels-grid">
+      <div class="reel-tile reveal d1" data-lightbox data-video="assetts/dariodondoli.mp4">
+        <video muted preload="metadata" playsinline><source src="assetts/dariodondoli.mp4" type="video/mp4"></video>
+        <div class="reel-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"></polygon></svg></div>
+        <div class="reel-caption">Dario Dondoli · 126k followers</div>
+      </div>
+      <div class="reel-tile reveal d2" data-lightbox data-video="assetts/busicraziofm.mp4">
+        <video muted preload="metadata" playsinline><source src="assetts/busicraziofm.mp4" type="video/mp4"></video>
+        <div class="reel-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"></polygon></svg></div>
+        <div class="reel-caption">Busicraziofm · 8k followers</div>
+      </div>
+      <div class="reel-tile reveal d3" data-lightbox data-video="assetts/NovaWave.mp4">
+        <video muted preload="metadata" playsinline><source src="assetts/NovaWave.mp4" type="video/mp4"></video>
+        <div class="reel-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"></polygon></svg></div>
+        <div class="reel-caption">NovaWave · 30k followers</div>
+      </div>
+      <div class="reel-tile reveal" data-lightbox data-video="assetts/scrollinginfinito.mp4">
+        <video muted preload="metadata" playsinline><source src="assetts/scrollinginfinito.mp4" type="video/mp4"></video>
+        <div class="reel-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"></polygon></svg></div>
+        <div class="reel-caption">Scrollinginfinito · 5k followers</div>
+      </div>
+    </div>
+
+    <div class="showcase-video-wrap reveal">
+      <div class="showcase-video-frame">
+        <video controls preload="metadata" playsinline controlslist="nodownload">
+          <source src="assetts/035.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="showcase-caption">035 · 321k followers</div>
+    </div>
+
+    <div class="projects-grid">
+      <div class="project-card card-light reveal d1">
+        <div class="project-shape"></div>
+        <div class="project-media">
+          <div class="project-img border-red"></div>
+        </div>
+        <h3>Da contenuti senza uno scopo a brand che vende</h3>
+        <p class="project-subtitle">Il caso di NovaWave</p>
+        <p class="project-desc">NovaWave pubblicava contenuti ogni giorno senza una direzione chiara e senza risultati misurabili. Abbiamo ridisegnato il posizionamento del brand e costruito un sistema di contenuti pensato per convertire, non solo per essere visti. Oggi genera lead qualificati ogni settimana.</p>
+        <p class="tag">Case study — Personal brand</p>
+      </div>
+
+      <div class="project-card card-dark reveal d2">
+        <div class="project-media">
+          <div class="project-img border-lime"></div>
+        </div>
+        <h3>Da lead non qualificati in DM a funnel automatico qualificato</h3>
+        <p class="project-subtitle">Il caso di Federico Feniello</p>
+        <p class="project-desc">Federico riceveva decine di messaggi in DM ogni giorno, ma la maggior parte non erano in target e gli facevano perdere ore di tempo. Abbiamo costruito un funnel automatico che qualifica i contatti prima ancora che arrivino in chat, lasciando solo le conversazioni che contano davvero.</p>
+        <p class="tag">Digital Marketing &amp; Content Strategy</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LIGHTBOX ================= -->
+<div class="lightbox" id="lightbox">
+  <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Chiudi">&times;</button>
+  <div class="lightbox-inner" id="lightboxInner"></div>
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container footer-inner-new reveal">
+    <a href="mailto:voximeta@gmail.com" class="footer-cta">Domande? Clicca qui, è gratis</a>
+    <a href="mailto:voximeta@gmail.com" class="footer-email">voximeta@gmail.com</a>
+    <p class="footer-credit">Mattia Russo · P.IVA 07422630827</p>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>initLightbox();</script>
+
+</body>
+</html>
