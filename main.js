@@ -222,7 +222,7 @@
       var payload = {};
       new FormData(formEl).forEach(function(value, key){ payload[key] = value; });
 
-      window.submitToWeb3Forms(payload)
+      window.submitLead(payload)
         .then(function(ok){
           if(ok){
             formEl.style.display = "none";
@@ -236,12 +236,19 @@
   };
 
   /* ---------------------------------------------------------
-     Shared Web3Forms POST helper — returns a Promise<boolean>.
+     Shared Google Sheets POST helper — returns a Promise<boolean>.
+     GOOGLE_SHEETS_URL is the "Web app" URL you get after deploying
+     the Apps Script (google-apps-script.gs) attached to the Sheet.
+     Content-Type is text/plain on purpose: Apps Script web apps do
+     not answer CORS preflight (OPTIONS) requests, so the request
+     must stay a CORS "simple request" (no preflight) or it always
+     fails with a generic network error before it even reaches Google.
   --------------------------------------------------------- */
-  window.submitToWeb3Forms = function(payload){
-    return fetch("https://api.web3forms.com/submit", {
+  var GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzpzokDyIaVvsBRazq3YT3OuBsRprNWNbpLoLtQFhzGeu1Y-1SIC_BJYlroBpq7WIImog/exec";
+  window.submitLead = function(payload){
+    return fetch(GOOGLE_SHEETS_URL, {
       method: "POST",
-      headers: {"Content-Type":"application/json", "Accept":"application/json"},
+      headers: {"Content-Type":"text/plain;charset=utf-8"},
       body: JSON.stringify(payload)
     })
     .then(function(res){ return res.json(); })
