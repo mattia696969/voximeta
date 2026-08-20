@@ -268,7 +268,7 @@
     var payload = {};
     new FormData(form).forEach(function(value, key){ payload[key] = value; });
 
-    submitToWeb3Forms(payload).then(function(ok){
+    submitLead(payload).then(function(ok){
       nextBtn.disabled = false;
       if(ok){
         form.style.display = "none";
