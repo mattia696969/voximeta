@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Richiedi il tuo posto — Voximeta</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="waitlist-page">
+
+<!-- ================= NAVBAR (liquid glass, centered) ================= -->
+<header class="navbar">
+  <div class="nav-pill" id="navPill">
+    <a href="https://www.instagram.com/voximeta/" target="_blank" rel="noopener" class="nav-logo-avatar" aria-label="Voximeta su Instagram">
+      <span>V</span>
+      <img src="assetts/fotoceo.jpg" alt="Voximeta">
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link"><span class="nl-default">Home</span><span class="nl-hover">Home</span></a></li>
+      <li><a href="brandaudit.html" class="nav-link"><span class="nl-default">Brand Audit</span><span class="nl-hover">Brand Audit</span></a></li>
+      <li><a href="progetti.html" class="nav-link"><span class="nl-default">Progetti</span><span class="nl-hover">Progetti</span></a></li>
+    </ul>
+
+    <button class="nav-burger" id="navBurger" aria-label="Apri menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="brandaudit.html">Brand Audit</a>
+    <a href="progetti.html">Progetti</a>
+  </div>
+</header>
+
+<!-- ================= WAITLIST FORM ================= -->
+<section class="waitlist-section">
+  <div class="container">
+    <div class="private-badge reveal">SEI DENTRO. SOLO IL 20% DI CHI VISITA IL SITO ARRIVA A SBLOCCARE QUESTA PAGINA.</div>
+
+    <p class="waitlist-intro reveal d1">Lavoriamo solo con chi ha davvero voglia di migliorare. Se sei arrivato fin qui, il resto lo scopri compilando il modulo.</p>
+
+    <h1 class="reveal d1">Richiedi il tuo posto in waitlist</h1>
+    <p class="waitlist-sub reveal d2">Guarda il video, poi sblocca il modulo con le domande.</p>
+
+    <div class="video-wrap reveal d2">
+      <div class="video-frame" id="videoFrame">
+        <iframe id="bunnyWaitlistPlayer" src="https://player.mediadelivery.net/embed/731969/a35b8b87-0d91-4f4c-83ef-a1ee20836243?autoplay=false&amp;muted=false" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen title="Waitlist Voximeta"></iframe>
+        <div class="video-seek-shield"></div>
+      </div>
+    </div>
+
+    <div class="audit-status-row reveal d3">
+      <span class="video-timer-small" id="videoTimerSmall">Guarda il video per sbloccare</span>
+      <button type="button" id="unlockFormBtn" class="btn-audit-3click">
+        <span class="btn-3click-label">Sblocca il modulo</span>
+      </button>
+    </div>
+
+    <form id="waitlistForm" class="underline-form" style="display:none;">
+      <input type="hidden" name="access_key" value="">
+      <input type="hidden" name="subject" value="Nuova richiesta Waitlist — Voximeta">
+      <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off">
+
+      <div class="field-u">
+        <label for="wl-name">Nome e cognome</label>
+        <input type="text" id="wl-name" name="full_name" placeholder="Il tuo nome" data-label="Nome e cognome" required>
+      </div>
+
+      <div class="field-u">
+        <label for="wl-email">Email</label>
+        <input type="email" id="wl-email" name="email" placeholder="tu@email.com" data-label="Email" required>
+      </div>
+
+      <div class="field-u">
+        <label for="wl-phone">Numero di telefono</label>
+        <input type="tel" id="wl-phone" name="phone" placeholder="+39 ..." data-label="Numero di telefono" required>
+      </div>
+
+      <div class="field-u">
+        <label for="wl-social">Instagram o canale principale</label>
+        <input type="text" id="wl-social" name="social" placeholder="@tuonome o link al canale" data-label="Instagram/canale" required>
+      </div>
+
+      <div class="field-u">
+        <label for="wl-revenue">Da quanto tempo il tuo business genera entrate costanti?</label>
+        <select id="wl-revenue" name="revenue_time" data-label="Entrate costanti" required>
+          <option value="" disabled selected>Seleziona...</option>
+          <option>Non ancora / meno di 3 mesi</option>
+          <option>3–6 mesi</option>
+          <option>6–12 mesi</option>
+          <option>Più di 1 anno</option>
+          <option>Più di 3 anni</option>
+        </select>
+      </div>
+
+      <div class="field-u">
+        <label for="wl-goal">Cosa cerchi davvero dai tuoi contenuti?</label>
+        <textarea id="wl-goal" name="content_goal" placeholder="es. più conversioni, autorevolezza, clienti migliori..." data-label="Obiettivo contenuti" required></textarea>
+      </div>
+
+      <div class="field-u">
+        <label for="wl-budget">Investimento mensile in contenuti/marketing</label>
+        <select id="wl-budget" name="monthly_budget" data-label="Investimento mensile" required>
+          <option value="" disabled selected>Seleziona...</option>
+          <option>0€ (non investo ancora)</option>
+          <option>100–500€</option>
+          <option>500–1.500€</option>
+          <option>1.500–5.000€</option>
+          <option>Oltre 5.000€</option>
+        </select>
+      </div>
+
+      <div class="field-u">
+        <label for="wl-pitch">In una frase, cosa fai e chi è il tuo cliente ideale?</label>
+        <textarea id="wl-pitch" name="pitch" placeholder="es. aiuto imprenditori del settore X a..." data-label="Pitch" required></textarea>
+      </div>
+
+      <div class="form-error"></div>
+      <button type="submit" class="submit-btn">Invia richiesta</button>
+    </form>
+    <div class="form-success">Grazie! Abbiamo ricevuto la tua richiesta: ti ricontattiamo entro 48 ore se il profilo è in linea.</div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container footer-inner-new reveal">
+    <a href="mailto:voximeta@gmail.com" class="footer-cta">Domande? Clicca qui, è gratis</a>
+    <a href="mailto:voximeta@gmail.com" class="footer-email">voximeta@gmail.com</a>
+    <p class="footer-credit">Mattia Russo · P.IVA 07422630827</p>
+  </div>
+</footer>
+
+<script src="https://assets.mediadelivery.net/playerjs/playerjs-latest.min.js"></script>
+<script src="main.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var videoTimerSmall = document.getElementById("videoTimerSmall");
+  var unlockFormBtn = document.getElementById("unlockFormBtn");
+  var waitlistForm = document.getElementById("waitlistForm");
+
+  initBunnyVideoGate({
+    iframeId: "bunnyWaitlistPlayer",
+    fallbackDuration: 240,
+    timerEl: videoTimerSmall,
+    onUnlock: function(){ unlockFormBtn.classList.add("unlocked"); }
+  });
+
+  unlockFormBtn.addEventListener("click", function(){
+    if(!unlockFormBtn.classList.contains("unlocked")) return;
+    waitlistForm.style.display = "";
+    waitlistForm.classList.add("reveal");
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ waitlistForm.classList.add("is-visible"); });
+    });
+    waitlistForm.scrollIntoView({behavior:"smooth", block:"start"});
+  });
+
+  attachSmartForm(waitlistForm, {
+    full_name: VoxValidators.fullName,
+    email: VoxValidators.email,
+    phone: VoxValidators.phone,
+    social: VoxValidators.social,
+    revenue_time: VoxValidators.notEmpty,
+    content_goal: VoxValidators.shortText,
+    monthly_budget: VoxValidators.notEmpty,
+    pitch: VoxValidators.longText
+  });
+})();
+</script>
+
+</body>
+</html>
