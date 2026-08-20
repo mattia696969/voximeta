@@ -14,7 +14,7 @@
   <div class="nav-pill" id="navPill">
     <a href="https://www.instagram.com/voximeta/" target="_blank" rel="noopener" class="nav-logo-avatar" aria-label="Voximeta su Instagram">
       <span>V</span>
-      <img src="assetts/fotoceo.jpg" alt="Voximeta">
+      <img src="immagini/fotoceo.jpg" alt="Voximeta">
     </a>
 
     <ul class="nav-links">
@@ -35,7 +35,7 @@
   </div>
 </header>
 
-<!-- ================= WAITLIST FORM ================= -->
+<!-- ================= WAITLIST ================= -->
 <section class="waitlist-section">
   <div class="container">
     <div class="private-badge reveal">SEI DENTRO. SOLO IL 20% DI CHI VISITA IL SITO ARRIVA A SBLOCCARE QUESTA PAGINA.</div>
@@ -47,8 +47,15 @@
 
     <div class="video-wrap reveal d2">
       <div class="video-frame" id="videoFrame">
-        <iframe id="bunnyWaitlistPlayer" src="https://player.mediadelivery.net/embed/731969/a35b8b87-0d91-4f4c-83ef-a1ee20836243?autoplay=false&amp;muted=false" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen title="Waitlist Voximeta"></iframe>
-        <div class="video-seek-shield"></div>
+        <mux-player id="muxWaitlistPlayer" playback-id="35uRp02w6ty4hv4E9kBVTbnRe5Fy01NqOdxJv8kJvgdJ8" stream-type="on-demand" preload="metadata" title="Waitlist Voximeta"></mux-player>
+        <div class="video-shield" id="videoShield"></div>
+        <div class="video-center-play">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"></polygon></svg>
+        </div>
+        <div class="video-volume">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path></svg>
+          <input type="range" id="volumeSlider" min="0" max="100" value="85" aria-label="Volume">
+        </div>
       </div>
     </div>
 
@@ -58,70 +65,6 @@
         <span class="btn-3click-label">Sblocca il modulo</span>
       </button>
     </div>
-
-    <form id="waitlistForm" class="underline-form" style="display:none;">
-      <input type="hidden" name="access_key" value="">
-      <input type="hidden" name="subject" value="Nuova richiesta Waitlist — Voximeta">
-      <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off">
-
-      <div class="field-u">
-        <label for="wl-name">Nome e cognome</label>
-        <input type="text" id="wl-name" name="full_name" placeholder="Il tuo nome" data-label="Nome e cognome" required>
-      </div>
-
-      <div class="field-u">
-        <label for="wl-email">Email</label>
-        <input type="email" id="wl-email" name="email" placeholder="tu@email.com" data-label="Email" required>
-      </div>
-
-      <div class="field-u">
-        <label for="wl-phone">Numero di telefono</label>
-        <input type="tel" id="wl-phone" name="phone" placeholder="+39 ..." data-label="Numero di telefono" required>
-      </div>
-
-      <div class="field-u">
-        <label for="wl-social">Instagram o canale principale</label>
-        <input type="text" id="wl-social" name="social" placeholder="@tuonome o link al canale" data-label="Instagram/canale" required>
-      </div>
-
-      <div class="field-u">
-        <label for="wl-revenue">Da quanto tempo il tuo business genera entrate costanti?</label>
-        <select id="wl-revenue" name="revenue_time" data-label="Entrate costanti" required>
-          <option value="" disabled selected>Seleziona...</option>
-          <option>Non ancora / meno di 3 mesi</option>
-          <option>3–6 mesi</option>
-          <option>6–12 mesi</option>
-          <option>Più di 1 anno</option>
-          <option>Più di 3 anni</option>
-        </select>
-      </div>
-
-      <div class="field-u">
-        <label for="wl-goal">Cosa cerchi davvero dai tuoi contenuti?</label>
-        <textarea id="wl-goal" name="content_goal" placeholder="es. più conversioni, autorevolezza, clienti migliori..." data-label="Obiettivo contenuti" required></textarea>
-      </div>
-
-      <div class="field-u">
-        <label for="wl-budget">Investimento mensile in contenuti/marketing</label>
-        <select id="wl-budget" name="monthly_budget" data-label="Investimento mensile" required>
-          <option value="" disabled selected>Seleziona...</option>
-          <option>0€ (non investo ancora)</option>
-          <option>100–500€</option>
-          <option>500–1.500€</option>
-          <option>1.500–5.000€</option>
-          <option>Oltre 5.000€</option>
-        </select>
-      </div>
-
-      <div class="field-u">
-        <label for="wl-pitch">In una frase, cosa fai e chi è il tuo cliente ideale?</label>
-        <textarea id="wl-pitch" name="pitch" placeholder="es. aiuto imprenditori del settore X a..." data-label="Pitch" required></textarea>
-      </div>
-
-      <div class="form-error"></div>
-      <button type="submit" class="submit-btn">Invia richiesta</button>
-    </form>
-    <div class="form-success">Grazie! Abbiamo ricevuto la tua richiesta: ti ricontattiamo entro 48 ore se il profilo è in linea.</div>
   </div>
 </section>
 
@@ -134,7 +77,106 @@
   </div>
 </footer>
 
-<script src="https://assets.mediadelivery.net/playerjs/playerjs-latest.min.js"></script>
+<!-- ================= MODAL: MULTI-STEP WAITLIST FORM ================= -->
+<div class="modal-backdrop" id="waitlistModal">
+  <div class="modal-card">
+    <div class="fs-page-indicator" id="fsPageIndicator">1/9</div>
+
+    <form id="waitlistForm" novalidate>
+      <input type="hidden" name="access_key" value="a1f9cc98-358c-40a2-b704-b1e3dfa88c56">
+      <input type="hidden" name="subject" value="Nuova richiesta Waitlist — Voximeta">
+      <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off">
+
+      <div class="fs-step active" data-step="1">
+        <label for="wl-name">Nome e cognome</label>
+        <input type="text" id="wl-name" name="full_name" placeholder="Il tuo nome" data-label="Nome e cognome">
+      </div>
+      <div class="fs-step" data-step="2">
+        <label for="wl-email">Email</label>
+        <input type="email" id="wl-email" name="email" placeholder="tu@email.com" data-label="Email">
+      </div>
+      <div class="fs-step" data-step="3">
+        <label for="wl-phone">Numero WhatsApp</label>
+        <input type="tel" id="wl-phone" name="phone" placeholder="+39 ..." data-label="Numero WhatsApp">
+      </div>
+      <div class="fs-step" data-step="4">
+        <label for="wl-social">Instagram o canale principale</label>
+        <input type="text" id="wl-social" name="social" placeholder="@tuonome o link al canale" data-label="Canale social">
+      </div>
+      <div class="fs-step" data-step="5">
+        <label for="wl-ticket">Qual è il prezzo del tuo servizio principale?</label>
+        <select id="wl-ticket" name="ticket" data-label="Prezzo servizio">
+          <option value="" disabled selected>Seleziona...</option>
+          <option>Sotto 500€</option>
+          <option>500 a 1.500€</option>
+          <option>1.500 a 3.000€</option>
+          <option>3.000 a 10.000€</option>
+          <option>Oltre 10.000€</option>
+        </select>
+      </div>
+      <div class="fs-step" data-step="6">
+        <label for="wl-revenue">Qual è il tuo fatturato medio mensile negli ultimi 3 mesi?</label>
+        <select id="wl-revenue" name="monthly_revenue" data-label="Fatturato mensile">
+          <option value="" disabled selected>Seleziona...</option>
+          <option>Sotto 1.000€</option>
+          <option>1.000 a 3.000€</option>
+          <option>3.000 a 10.000€</option>
+          <option>10.000 a 30.000€</option>
+          <option>Oltre 30.000€</option>
+        </select>
+      </div>
+      <div class="fs-step" data-step="7">
+        <label for="wl-content">Chi si occupa oggi dei tuoi contenuti?</label>
+        <select id="wl-content" name="content_owner" data-label="Chi gestisce i contenuti">
+          <option value="" disabled selected>Seleziona...</option>
+          <option>Nessuno, non pubblico</option>
+          <option>Li faccio io</option>
+          <option>Un freelance</option>
+          <option>Un'agenzia</option>
+        </select>
+      </div>
+      <div class="fs-step" data-step="8">
+        <label for="wl-budget">Quanto investi ogni mese in marketing e contenuti?</label>
+        <select id="wl-budget" name="monthly_budget" data-label="Investimento mensile">
+          <option value="" disabled selected>Seleziona...</option>
+          <option>0€, non investo ancora</option>
+          <option>100 a 500€</option>
+          <option>500 a 1.500€</option>
+          <option>1.500 a 5.000€</option>
+          <option>Oltre 5.000€</option>
+        </select>
+      </div>
+      <div class="fs-step" data-step="9">
+        <label for="wl-blocker">Cosa ti sta bloccando adesso? Rispondi in una frase.</label>
+        <textarea id="wl-blocker" name="blocker" placeholder="es. pubblico ogni giorno ma non arrivano richieste" data-label="Blocco attuale"></textarea>
+      </div>
+
+      <div class="fs-error" id="fsError"></div>
+
+      <div class="fs-nav" id="fsNav">
+        <button type="button" class="fs-prev" id="fsPrev" aria-label="Indietro">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </button>
+        <button type="button" class="fs-next" id="fsNext">Avanti</button>
+      </div>
+    </form>
+
+    <div class="fs-success" id="fsSuccess">
+      <p>Grazie. Abbiamo ricevuto la tua richiesta: ti ricontattiamo entro 48 ore se il profilo è in linea.</p>
+      <button type="button" class="btn-close-modal" id="btnCloseModal">Chiudi</button>
+    </div>
+  </div>
+</div>
+
+<div class="cookie-banner" id="cookieBanner">
+  <p>Usiamo cookie tecnici necessari al funzionamento del sito e, se acconsenti, cookie di misurazione per capire come viene usato il sito. Puoi cambiare idea in qualsiasi momento scrivendo a <a href="mailto:voximeta@gmail.com">voximeta@gmail.com</a>.</p>
+  <div class="cookie-banner-actions">
+    <button type="button" class="cookie-btn-reject" id="cookieReject">Rifiuta</button>
+    <button type="button" class="cookie-btn-accept" id="cookieAccept">Accetta</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mux/mux-player"></script>
 <script src="main.js"></script>
 <script>
 (function(){
@@ -142,35 +184,120 @@
 
   var videoTimerSmall = document.getElementById("videoTimerSmall");
   var unlockFormBtn = document.getElementById("unlockFormBtn");
-  var waitlistForm = document.getElementById("waitlistForm");
 
-  initBunnyVideoGate({
-    iframeId: "bunnyWaitlistPlayer",
-    fallbackDuration: 240,
+  initMuxVideoGate({
+    playerId: "muxWaitlistPlayer",
     timerEl: videoTimerSmall,
+    shieldEl: document.getElementById("videoShield"),
+    volumeSlider: document.getElementById("volumeSlider"),
     onUnlock: function(){ unlockFormBtn.classList.add("unlocked"); }
   });
 
+  /* ---------- Multi-step modal (identical pattern to brandaudit.html) ---------- */
+  var modal = document.getElementById("waitlistModal");
+  var form = document.getElementById("waitlistForm");
+  var steps = form.querySelectorAll(".fs-step");
+  var totalSteps = steps.length;
+  var currentStep = 1;
+  var pageIndicator = document.getElementById("fsPageIndicator");
+  var prevBtn = document.getElementById("fsPrev");
+  var nextBtn = document.getElementById("fsNext");
+  var fsNav = document.getElementById("fsNav");
+  var fsError = document.getElementById("fsError");
+  var fsSuccess = document.getElementById("fsSuccess");
+
+  var FIELD_MAP = {
+    1: {name:"full_name", validator: VoxValidators.fullName},
+    2: {name:"email", validator: VoxValidators.email},
+    3: {name:"phone", validator: VoxValidators.phone},
+    4: {name:"social", validator: VoxValidators.social},
+    5: {name:"ticket", validator: VoxValidators.notEmpty},
+    6: {name:"monthly_revenue", validator: VoxValidators.notEmpty},
+    7: {name:"content_owner", validator: VoxValidators.notEmpty},
+    8: {name:"monthly_budget", validator: VoxValidators.notEmpty},
+    9: {name:"blocker", validator: VoxValidators.longText}
+  };
+
+  function showStep(n){
+    steps.forEach(function(s){
+      s.classList.toggle("active", parseInt(s.dataset.step, 10) === n);
+    });
+    pageIndicator.textContent = n + "/" + totalSteps;
+    prevBtn.classList.toggle("show", n > 1 && n < totalSteps);
+    fsNav.classList.toggle("final", n === totalSteps);
+    nextBtn.textContent = n === totalSteps ? "Invia richiesta" : "Avanti";
+    fsError.textContent = "";
+  }
+
+  function openModal(){
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeModal(){
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+    currentStep = 1;
+    showStep(1);
+    form.reset();
+    form.style.display = "";
+    fsSuccess.style.display = "none";
+  }
+
   unlockFormBtn.addEventListener("click", function(){
     if(!unlockFormBtn.classList.contains("unlocked")) return;
-    waitlistForm.style.display = "";
-    waitlistForm.classList.add("reveal");
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){ waitlistForm.classList.add("is-visible"); });
-    });
-    waitlistForm.scrollIntoView({behavior:"smooth", block:"start"});
+    openModal();
   });
 
-  attachSmartForm(waitlistForm, {
-    full_name: VoxValidators.fullName,
-    email: VoxValidators.email,
-    phone: VoxValidators.phone,
-    social: VoxValidators.social,
-    revenue_time: VoxValidators.notEmpty,
-    content_goal: VoxValidators.shortText,
-    monthly_budget: VoxValidators.notEmpty,
-    pitch: VoxValidators.longText
+  prevBtn.addEventListener("click", function(){
+    if(currentStep > 1){
+      currentStep--;
+      showStep(currentStep);
+    }
   });
+
+  nextBtn.addEventListener("click", function(){
+    var cfg = FIELD_MAP[currentStep];
+    var field = form.querySelector('[name="' + cfg.name + '"]');
+    if(!cfg.validator(field.value)){
+      fsError.textContent = 'Controlla "' + (field.dataset.label || cfg.name) + '": la risposta non sembra completa o pertinente.';
+      field.focus();
+      return;
+    }
+    if(currentStep < totalSteps){
+      currentStep++;
+      showStep(currentStep);
+    } else {
+      submitForm();
+    }
+  });
+
+  function submitForm(){
+    var honeypot = form.querySelector(".hp-field");
+    if(honeypot && honeypot.checked){
+      form.style.display = "none";
+      fsSuccess.style.display = "block";
+      return;
+    }
+    nextBtn.disabled = true;
+    nextBtn.textContent = "Invio in corso...";
+    var payload = {};
+    new FormData(form).forEach(function(value, key){ payload[key] = value; });
+
+    submitToWeb3Forms(payload).then(function(ok){
+      nextBtn.disabled = false;
+      if(ok){
+        form.style.display = "none";
+        fsSuccess.style.display = "block";
+      } else {
+        nextBtn.textContent = "Invia richiesta";
+        fsError.textContent = "Errore di invio, riprova o scrivici a voximeta@gmail.com.";
+      }
+    });
+  }
+
+  document.getElementById("btnCloseModal").addEventListener("click", closeModal);
+  /* Intentionally no backdrop-click / Escape close: the modal only
+     closes via the success screen's "Chiudi" button, per spec. */
 })();
 </script>
 
