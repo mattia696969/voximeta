@@ -5,15 +5,10 @@
   "use strict";
 
   /* ---------------------------------------------------------
-     Web3Forms access key — https://web3forms.com
+     Web3Forms — each form carries its own access_key value
+     directly in its HTML (Brand Audit and Waitlist use separate
+     keys), so nothing here overrides them.
   --------------------------------------------------------- */
-  var WEB3FORMS_ACCESS_KEY = "15c9c84f-3475-4771-97d2-59f3373a2db7";
-
-  document.addEventListener("DOMContentLoaded", function(){
-    document.querySelectorAll('input[name="access_key"]').forEach(function(input){
-      input.value = WEB3FORMS_ACCESS_KEY;
-    });
-  });
 
   /* ---------- Footer year (if present) ---------- */
   document.addEventListener("DOMContentLoaded", function(){
@@ -118,6 +113,47 @@
         }
       });
     });
+
+    /* ---------------------------------------------------------
+       Cookie consent banner. Stores the choice in localStorage
+       under "voximeta_cookie_consent" ("accepted" / "rejected")
+       and fires a "voximeta:cookieconsent" event with that value
+       on `document` — listen for it before loading the Meta Pixel
+       (or any other non-essential tracking script), e.g.:
+         document.addEventListener("voximeta:cookieconsent", function(e){
+           if(e.detail === "accepted"){ loadMetaPixelHere(); }
+         });
+       and check localStorage.getItem("voximeta_cookie_consent")
+       the same way on pages loaded after the choice was made.
+    --------------------------------------------------------- */
+    var cookieBanner = document.getElementById("cookieBanner");
+    if(cookieBanner){
+      var CONSENT_KEY = "voximeta_cookie_consent";
+      var existing = null;
+      try{ existing = localStorage.getItem(CONSENT_KEY); }catch(e){}
+
+      function fireConsent(value){
+        try{ localStorage.setItem(CONSENT_KEY, value); }catch(e){}
+        document.dispatchEvent(new CustomEvent("voximeta:cookieconsent", {detail: value}));
+      }
+
+      if(!existing){
+        requestAnimationFrame(function(){ cookieBanner.classList.add("show"); });
+      } else {
+        fireConsent(existing);
+      }
+
+      var acceptBtn = document.getElementById("cookieAccept");
+      var rejectBtn = document.getElementById("cookieReject");
+      if(acceptBtn) acceptBtn.addEventListener("click", function(){
+        cookieBanner.classList.remove("show");
+        fireConsent("accepted");
+      });
+      if(rejectBtn) rejectBtn.addEventListener("click", function(){
+        cookieBanner.classList.remove("show");
+        fireConsent("rejected");
+      });
+    }
   });
 
   /* ---------------------------------------------------------
@@ -214,24 +250,30 @@
   };
 
   /* ---------------------------------------------------------
-     Bunny Stream video gate — Bunny's own native player (play/
-     pause/volume/fullscreen) stays fully visible and usable; a
-     thin CSS-only strip (.video-seek-shield) over the seek bar
-     is the only thing blocked, so the timeline can't be dragged.
-     This just listens (via player.js) for duration/ended so it
-     can drive a "time remaining" readout, a lock icon, and
-     opts.onUnlock() — with a wall-clock fallback that takes over
-     if the iframe never confirms real events.
+     Mux Player video gate — <mux-player> is a real custom element
+     (no iframe, no postMessage), so play()/pause()/currentTime/
+     volume/paused/duration are the same synchronous properties a
+     native <video> has. The element itself has pointer-events:none
+     in CSS (its shadow-dom controls are unreachable); a transparent
+     shield on top drives play/pause via direct calls, with a big
+     center icon that hides once playing. The "time remaining"
+     readout is driven only by real timeupdate events, so it stops
+     the instant the video is paused — no independent wall-clock
+     countdown pretending to track a paused video. A forward jump
+     in currentTime (the only way one could happen, since the seek
+     bar itself is unreachable) is snapped back immediately.
   --------------------------------------------------------- */
-  window.initBunnyVideoGate = function(opts){
-    var iframe = document.getElementById(opts.iframeId);
-    if(!iframe || typeof playerjs === "undefined") return null;
-    var player = new playerjs.Player(iframe);
+  window.initMuxVideoGate = function(opts){
+    var player = document.getElementById(opts.playerId);
+    if(!player) return null;
+    player.muted = false;
+    player.volume = 0.85;
+
+    var videoFrame = player.parentElement;
     var lastAllowedTime = 0;
     var duration = 0;
-    var realEventsSeen = false;
     var everEnded = false;
-    var fallbackRemaining = opts.fallbackDuration || 240;
+    var isPaused = true;
 
     function formatTime(sec){
       sec = Math.max(0, Math.round(sec || 0));
@@ -240,45 +282,61 @@
       return m + ":" + (s < 10 ? "0" : "") + s;
     }
 
+    function setPlayingUI(playing){
+      if(videoFrame) videoFrame.classList.toggle("is-playing", playing);
+    }
+
+    function togglePlay(){
+      if(isPaused){
+        var p = player.play();
+        if(p && p.catch) p.catch(function(){});
+      } else {
+        player.pause();
+      }
+    }
+
     function unlock(){
       if(everEnded) return;
       everEnded = true;
-      clearInterval(fallbackInterval);
       if(opts.lockEl){ opts.lockEl.textContent = "🔓"; opts.lockEl.classList.add("unlocked"); }
       if(opts.timerEl) opts.timerEl.textContent = "Video completato";
       if(opts.onUnlock) opts.onUnlock();
     }
 
-    /* Wall-clock fallback: takes over the timer/unlock if the
-       iframe never confirms real playback events back to us
-       (some embed/postMessage setups are unreliable), so the
-       gate still works even without accurate video data. */
-    var fallbackInterval = setInterval(function(){
-      if(realEventsSeen){ clearInterval(fallbackInterval); return; }
-      fallbackRemaining--;
-      if(opts.timerEl) opts.timerEl.textContent = formatTime(fallbackRemaining) + " rimanenti";
-      if(fallbackRemaining <= 0){
-        clearInterval(fallbackInterval);
-        unlock();
-      }
-    }, 1000);
+    player.addEventListener("play", function(){ isPaused = false; setPlayingUI(true); });
+    player.addEventListener("pause", function(){ isPaused = true; setPlayingUI(false); });
 
-    player.on("ready", function(){
-      player.on("timeupdate", function(data){
-        realEventsSeen = true;
-        if(data.duration) duration = data.duration;
-        if(data.seconds > lastAllowedTime + 1.2){
-          player.setCurrentTime(lastAllowedTime);
-        } else {
-          lastAllowedTime = data.seconds;
-        }
-        if(opts.timerEl && lastAllowedTime < duration - 0.4){
-          opts.timerEl.textContent = formatTime(duration - data.seconds) + " rimanenti";
-        }
-      });
-      player.on("ended", function(){ realEventsSeen = true; unlock(); });
-      if(opts.onReady) opts.onReady(player);
+    player.addEventListener("timeupdate", function(){
+      duration = player.duration || duration;
+      var seconds = player.currentTime || 0;
+      if(seconds > lastAllowedTime + 1.2){
+        player.currentTime = lastAllowedTime;
+        return;
+      }
+      lastAllowedTime = seconds;
+      if(opts.timerEl && !everEnded && duration && lastAllowedTime < duration - 0.4){
+        opts.timerEl.textContent = formatTime(duration - seconds) + " rimanenti";
+      }
     });
+    player.addEventListener("ended", unlock);
+
+    /* Last-resort safety net only — real events drive everything
+       above; this just prevents a permanent dead end if something
+       truly never fires. Generous on purpose, and silent (it
+       doesn't touch the visible timer, which only shows real data). */
+    setTimeout(unlock, (opts.safetyNetMinutes || 20) * 60 * 1000);
+
+    if(opts.shieldEl) opts.shieldEl.addEventListener("click", togglePlay);
+    if(opts.shieldEl) opts.shieldEl.addEventListener("contextmenu", function(e){ e.preventDefault(); });
+
+    if(opts.volumeSlider){
+      opts.volumeSlider.addEventListener("input", function(){
+        var val = Math.max(0, Math.min(100, parseInt(opts.volumeSlider.value, 10) || 0));
+        opts.volumeSlider.value = val;
+        player.volume = val / 100;
+        player.muted = false;
+      });
+    }
 
     return player;
   };
