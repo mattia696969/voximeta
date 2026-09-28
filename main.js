@@ -244,7 +244,7 @@
      must stay a CORS "simple request" (no preflight) or it always
      fails with a generic network error before it even reaches Google.
   --------------------------------------------------------- */
-  var GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzpzokDyIaVvsBRazq3YT3OuBsRprNWNbpLoLtQFhzGeu1Y-1SIC_BJYlroBpq7WIImog/exec";
+  var GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxHP-8Zk82t-exZ5N80vqK3Bx3ShHHdkoKSp2_vBGvKKkf67QePmGCytmqClDg_LKC9/exec";
   window.submitLead = function(payload){
     return fetch(GOOGLE_SHEETS_URL, {
       method: "POST",

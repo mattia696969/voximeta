@@ -441,7 +441,7 @@ section{padding:220px 0;position:relative;}
 }
 
 .reel-item{
-  display:flex;flex-direction:column;flex:0 0 auto;width:240px;
+  display:flex;flex-direction:column;flex:0 0 auto;width:280px;
   transition:transform .4s var(--ease), opacity .4s var(--ease);
 }
 .reel-item.lifted{transform:translateY(-20px) scale(1.05);z-index:5;}
@@ -605,7 +605,7 @@ footer{
   .countdown-plain{gap:6px;}
   .project-card{padding:36px;min-height:auto;}
   .projects-group + .projects-group{margin-top:100px;padding-top:72px;}
-  .reel-item{width:170px;}
+  .reel-item{width:190px;}
   .reels-track{gap:18px;}
 }
 

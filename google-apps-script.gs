@@ -49,9 +49,14 @@ function doPost(e) {
       sheet.appendRow(headers);
     }
 
+    // leading apostrophe forces Sheets to store the number as plain text —
+    // without it, a value starting with "+" (e.g. "+39 333...") can be
+    // read as an attempted formula and show as an error in the cell.
+    var phoneText = "'" + (data.phone || "");
+
     var row = isWaitlist
-      ? [new Date(), data.full_name, data.email, data.phone, data.social, data.ticket, data.monthly_revenue, data.content_owner, data.monthly_budget, data.blocker]
-      : [new Date(), data.full_name, data.email, data.phone, data.social, data.business, data.why];
+      ? [new Date(), data.full_name, data.email, phoneText, data.social, data.ticket, data.monthly_revenue, data.content_owner, data.monthly_budget, data.blocker]
+      : [new Date(), data.full_name, data.email, phoneText, data.social, data.business, data.why];
 
     sheet.appendRow(row);
 
