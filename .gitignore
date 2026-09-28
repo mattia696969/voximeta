@@ -1,0 +1,4 @@
+# Raw video source files — the live site streams these from Mux instead.
+# Keep only assets that are actually referenced by local <video> tags.
+assetts/*.mp4
+!assetts/velasca.mp4
