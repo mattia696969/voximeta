@@ -3,8 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brand Audit — Voximeta</title>
+<title>Brand Audit · Voximeta</title>
 <meta name="description" content="Guarda come funziona il tuo Brand Audit gratuito.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400&family=Instrument+Serif:ital@1&family=GFS+Didot&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,16 +16,13 @@
 <header class="navbar">
   <div class="nav-pill" id="navPill">
     <a href="https://www.instagram.com/voximeta/" target="_blank" rel="noopener" class="nav-logo-avatar" aria-label="Voximeta su Instagram">
-      <span>V</span>
-      <img src="assetts/fotoceo.jpg" alt="Voximeta">
+      <img src="immagini/fotoceo.jpg" alt="Voximeta">
     </a>
+    <span class="nav-wordmark">voximeta</span>
 
     <ul class="nav-links">
       <li><a href="index.html" class="nav-link"><span class="nl-default">Home</span><span class="nl-hover">Home</span></a></li>
-      <li class="nav-item-badge">
-        <a href="brandaudit.html" class="nav-link"><span class="nl-default">Brand Audit</span><span class="nl-hover">Brand Audit</span></a>
-        <span class="badge-tag">GRATIS PER POCO TEMPO</span>
-      </li>
+      <li><a href="brandaudit.html" class="nav-link"><span class="nl-default">Brand Audit</span><span class="nl-hover">Brand Audit</span></a></li>
       <li><a href="progetti.html" class="nav-link"><span class="nl-default">Progetti</span><span class="nl-hover">Progetti</span></a></li>
       <li><a href="#" class="nav-link js-waitlist-link"><span class="nl-default">Entra in waitlist</span><span class="nl-hover">Entra in waitlist</span></a></li>
     </ul>
@@ -44,23 +44,18 @@
 <section id="audit">
   <div class="container">
     <div class="audit-head reveal">
-      <h2 class="section-title">Guarda come funziona il tuo Brand Audit gratuito</h2>
-      <p class="section-sub" style="margin:0 auto 50px;">In meno di 4 minuti ti spieghiamo esattamente cosa analizziamo e come funziona il processo. Il video non si può saltare in avanti: guardalo fino alla fine per sbloccare la richiesta.</p>
+      <h2 class="section-title">Guarda come funziona il tuo <span class="accent-serif underline-sweep">Brand Audit</span> gratuito</h2>
+      <p class="section-sub" style="margin:0 auto 50px;">In meno di 4 minuti ti spieghiamo esattamente cosa analizziamo e come funziona il processo.</p>
     </div>
 
     <div class="video-wrap reveal d1">
       <div class="video-frame" id="videoFrame">
-        <iframe id="bunnyAuditPlayer" src="https://player.mediadelivery.net/embed/731969/3fbafeea-7ed3-4009-8efc-6302f415edfb?autoplay=false&amp;muted=false" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen title="Brand Audit Voximeta"></iframe>
-        <div class="video-seek-shield"></div>
+        <mux-player id="muxAuditPlayer" playback-id="gC5riKGdrOEDTjwleJWtUONVgYqKjwpbioqqy4zs8l8" stream-type="on-demand" preload="metadata" title="Brand Audit Voximeta" controls></mux-player>
       </div>
     </div>
 
-    <div class="audit-status-row reveal d2">
-      <span class="lock-icon" id="lockIcon">🔒</span>
-      <span class="video-timer-small" id="videoTimerSmall">Guarda il video per sbloccare</span>
-      <button type="button" id="auditCtaBtn" class="btn-audit-3click">
-        <span class="btn-3click-label">Richiedi il Brand Audit</span>
-      </button>
+    <div class="reveal d2">
+      <button type="button" id="auditCtaBtn" class="btn btn-primary">Richiedi il Brand Audit</button>
     </div>
   </div>
 </section>
@@ -80,8 +75,8 @@
     <div class="fs-page-indicator" id="fsPageIndicator">1/6</div>
 
     <form id="auditForm" novalidate>
-      <input type="hidden" name="access_key" value="">
-      <input type="hidden" name="subject" value="Nuova richiesta Brand Audit — Voximeta">
+      <input type="hidden" name="access_key" value="fe63ee16-616d-49f0-bb92-533addf34ca0">
+      <input type="hidden" name="subject" value="Nuova richiesta Brand Audit · Voximeta">
       <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off">
 
       <div class="fs-step active" data-step="1">
@@ -126,50 +121,22 @@
   </div>
 </div>
 
-<script src="https://assets.mediadelivery.net/playerjs/playerjs-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mux/mux-player"></script>
+<div class="cookie-banner" id="cookieBanner">
+  <p>Usiamo cookie tecnici necessari al funzionamento del sito e, se acconsenti, cookie di misurazione per capire come viene usato il sito. Puoi cambiare idea in qualsiasi momento scrivendo a <a href="mailto:voximeta@gmail.com">voximeta@gmail.com</a>.</p>
+  <div class="cookie-banner-actions">
+    <button type="button" class="cookie-btn-reject" id="cookieReject">Rifiuta</button>
+    <button type="button" class="cookie-btn-accept" id="cookieAccept">Accetta</button>
+  </div>
+</div>
+
 <script src="main.js"></script>
 <script>
 (function(){
   "use strict";
 
-  var lockIcon = document.getElementById("lockIcon");
-  var videoTimerSmall = document.getElementById("videoTimerSmall");
   var auditCtaBtn = document.getElementById("auditCtaBtn");
-  var btnLabel = auditCtaBtn.querySelector(".btn-3click-label");
-
-  initBunnyVideoGate({
-    iframeId: "bunnyAuditPlayer",
-    fallbackDuration: 240,
-    timerEl: videoTimerSmall,
-    lockEl: lockIcon,
-    onUnlock: function(){ auditCtaBtn.classList.add("unlocked"); }
-  });
-
-  /* ---------- 3-click confirm button ---------- */
-  var CLICK_TEXTS = [
-    "Richiedi il Brand Audit",
-    "Sei sicuro?",
-    "Vuoi veramente migliorare il tuo brand?",
-    "Clicca per confermare"
-  ];
-  var clickCount = 0;
-
-  function fadeSwapText(el, newText){
-    el.classList.add("fading");
-    setTimeout(function(){
-      el.textContent = newText;
-      el.classList.remove("fading");
-    }, 200);
-  }
-
-  auditCtaBtn.addEventListener("click", function(){
-    if(!auditCtaBtn.classList.contains("unlocked")) return;
-    clickCount++;
-    fadeSwapText(btnLabel, CLICK_TEXTS[Math.min(clickCount, CLICK_TEXTS.length - 1)]);
-    if(clickCount >= 3){
-      setTimeout(openModal, 350);
-    }
-  });
+  auditCtaBtn.addEventListener("click", function(){ openModal(); });
 
   /* ---------- Multi-step modal ---------- */
   var modal = document.getElementById("auditModal");
@@ -198,7 +165,7 @@
       s.classList.toggle("active", parseInt(s.dataset.step, 10) === n);
     });
     pageIndicator.textContent = n + "/" + totalSteps;
-    prevBtn.classList.toggle("show", n > 1);
+    prevBtn.classList.toggle("show", n > 1 && n < totalSteps);
     fsNav.classList.toggle("final", n === totalSteps);
     nextBtn.textContent = n === totalSteps ? "Invia richiesta" : "Avanti";
     fsError.textContent = "";
@@ -216,8 +183,6 @@
     form.reset();
     form.style.display = "";
     fsSuccess.style.display = "none";
-    clickCount = 0;
-    btnLabel.textContent = CLICK_TEXTS[0];
   }
 
   prevBtn.addEventListener("click", function(){
@@ -255,7 +220,7 @@
     var payload = {};
     new FormData(form).forEach(function(value, key){ payload[key] = value; });
 
-    submitToWeb3Forms(payload).then(function(ok){
+    submitLead(payload).then(function(ok){
       nextBtn.disabled = false;
       if(ok){
         form.style.display = "none";
