@@ -74,6 +74,18 @@
     sweepEls.forEach(function(el){ swIo.observe(el); });
   }
 
+  /* ---------- Real viewport height for #hero (mobile browsers resize
+     their chrome, so 100dvh alone isn't always reliable in practice —
+     this reads the actual window height directly). ---------- */
+  (function(){
+    function setHeroVh(){
+      document.documentElement.style.setProperty("--vh100", window.innerHeight + "px");
+    }
+    setHeroVh();
+    window.addEventListener("resize", setHeroVh);
+    window.addEventListener("orientationchange", setHeroVh);
+  })();
+
   /* ---------- Nav pill compacts on scroll ---------- */
   document.addEventListener("DOMContentLoaded", function(){
     var pill = document.getElementById("navPill");
@@ -102,10 +114,25 @@
       });
     }
 
-    /* ---------- "Entra in waitlist" deny animation ---------- */
+    /* ---------- "Entra in waitlist" deny animation + toast ---------- */
+    var waitlistToastTimer = null;
+    function showWaitlistToast(){
+      var toast = document.getElementById("waitlistToast");
+      if(!toast){
+        toast = document.createElement("div");
+        toast.id = "waitlistToast";
+        toast.className = "toast";
+        toast.textContent = "Per entrare in waitlist devi richiedere un Brand Audit";
+        document.body.appendChild(toast);
+      }
+      toast.classList.add("show");
+      clearTimeout(waitlistToastTimer);
+      waitlistToastTimer = setTimeout(function(){ toast.classList.remove("show"); }, 3200);
+    }
     document.querySelectorAll(".js-waitlist-link").forEach(function(link){
       link.addEventListener("click", function(e){
         e.preventDefault();
+        showWaitlistToast();
         if(link.classList.contains("denied")) return;
         link.classList.add("denied");
         setTimeout(function(){ link.classList.remove("denied"); }, 900);

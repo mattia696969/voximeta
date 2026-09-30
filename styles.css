@@ -53,18 +53,19 @@ video{max-width:100%;display:block;}
 /* ---------- Film grain — ties to the brand's own photography spec
    ("grana leggera da pellicola"); a faint flicker, not a filter. ---------- */
 .grain-overlay{
-  position:fixed;inset:-20px;z-index:9999;pointer-events:none;
-  opacity:.11;
+  position:fixed;inset:0;z-index:9999;pointer-events:none;
+  opacity:.16;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
   background-size:180px 180px;
   animation:grainShift .8s steps(4) infinite;
 }
 @keyframes grainShift{
-  0%{transform:translate(0,0);}
-  25%{transform:translate(-3%,2%);}
-  50%{transform:translate(2%,-2%);}
-  75%{transform:translate(-2%,-3%);}
-  100%{transform:translate(0,0);}
+  0%{background-position:0px 0px;}
+  25%{background-position:-40px 15px;}
+  50%{background-position:20px -25px;}
+  75%{background-position:-15px 30px;}
+  100%{background-position:0px 0px;}
 }
 button{font-family:inherit;cursor:pointer;border:none;background:none;}
 input,textarea,select{font-family:inherit;}
@@ -237,7 +238,7 @@ header.navbar{
    ============================================================ */
 #hero{
   position:relative;padding:220px 0 180px;overflow:hidden;
-  min-height:100vh;min-height:100dvh;
+  min-height:100vh;min-height:100dvh;min-height:var(--vh100, 100dvh);
   display:flex;align-items:center;
   background:
     radial-gradient(ellipse 70% 60% at 50% -10%, rgba(168,132,74,.16), transparent 60%),
@@ -671,6 +672,24 @@ footer{
   .reel-item{width:190px;}
   .reels-track{gap:18px;}
 }
+
+/* ============================================================
+   Toast (waitlist notice)
+   ============================================================ */
+.toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translate(-50%,10px);
+  background:rgba(20,19,17,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--hairline-soft);border-left:2px solid var(--oro);
+  border-radius:var(--radius-md);
+  padding:14px 22px;color:var(--avorio);
+  font-size:13.5px;font-weight:500;letter-spacing:-.005em;
+  max-width:min(420px,calc(100vw - 32px));
+  box-shadow:0 24px 50px -20px rgba(0,0,0,.55);
+  z-index:1000;opacity:0;pointer-events:none;
+  transition:opacity .4s var(--ease), transform .4s var(--ease);
+}
+.toast.show{opacity:1;transform:translate(-50%,0);}
 
 /* ============================================================
    Cookie consent banner
