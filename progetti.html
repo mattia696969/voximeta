@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<div class="grain-overlay" aria-hidden="true"></div>
 
 <!-- ================= NAVBAR (liquid glass, centered) ================= -->
 <header class="navbar">
@@ -88,6 +89,13 @@
             </div>
             <div class="reel-caption">Piccoli Mondi · 27.2k followers</div>
           </div>
+          <div class="reel-item">
+            <div class="reel-tile" data-video-src="assetts/Simone.mp4">
+              <video muted loop playsinline preload="metadata" src="assetts/Simone.mp4"></video>
+              <div class="reel-shield"></div>
+            </div>
+            <div class="reel-caption">Dddreambaby · 4k followers</div>
+          </div>
         </div>
       </div>
       </div>
@@ -131,6 +139,19 @@
           <p class="project-subtitle">Il caso di Federico Feniello</p>
           <p class="project-desc">Federico riceveva decine di messaggi in DM ogni giorno, ma la maggior parte non erano in target e gli facevano perdere ore di tempo. Abbiamo costruito un funnel automatico che qualifica i contatti prima ancora che arrivino in chat, lasciando solo le conversazioni che contano davvero.</p>
           <p class="tag">Digital Marketing &amp; Content Strategy</p>
+        </div>
+
+        <div class="project-card card-dark full reveal d3">
+          <div class="project-media">
+            <div class="project-img">
+              <mux-player playback-id="OS5luPLp2z4IPOfY00TsNxdD5AtY843Yy006AO2UaBCWg" stream-type="on-demand" muted loop playsinline preload="metadata" title="Caso studio Dddreambaby AI Course"></mux-player>
+              <div class="reel-shield" data-video-id="OS5luPLp2z4IPOfY00TsNxdD5AtY843Yy006AO2UaBCWg" data-wide="true"></div>
+            </div>
+          </div>
+          <h3>Da zero iscritti a una community di 1.200 membri attivi</h3>
+          <p class="project-subtitle">Il caso di Dddreambaby AI Course</p>
+          <p class="project-desc">Dddreambaby AI Course insegna a creare video con l'intelligenza artificiale e venderli alle aziende. La loro community su Skool partiva da zero. Abbiamo montato le prime tre ads del loro lancio: sono bastate per arrivare a oltre 1.200 membri attivi, con ancora ampio margine di crescita davanti.</p>
+          <p class="tag">Ads &amp; Community Building</p>
         </div>
       </div>
     </div>
@@ -210,6 +231,15 @@
   lightbox.addEventListener("click", function(e){ if(e.target === lightbox) close(); });
   document.addEventListener("keydown", function(e){ if(e.key === "Escape") close(); });
 
+  /* ---------- Case-study cards: soft glow follows the cursor ---------- */
+  document.querySelectorAll(".project-card").forEach(function(card){
+    card.addEventListener("mousemove", function(e){
+      var r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      card.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
+  });
+
   /* ---------- Reel & case-study previews: play only on hover ---------- */
   document.querySelectorAll(".reel-tile, .project-img, .showcase-video-frame").forEach(function(tile){
     var player = tile.querySelector("mux-player, video");
@@ -224,8 +254,9 @@
     });
   });
 
-  /* ---------- Reel ribbon: hovered card lifts like a drawn card,
-     the rest dim, the whole ribbon pauses (via CSS :hover). ---------- */
+  /* ---------- Reel ribbon: hovered card lifts like a drawn card and
+     tilts toward the cursor, the rest dim, the whole ribbon pauses
+     (via CSS :hover). ---------- */
   if(reelsTrack){
     var reelItems = reelsTrack.querySelectorAll(".reel-item");
     reelItems.forEach(function(item){
@@ -233,8 +264,17 @@
         item.classList.add("lifted");
         reelItems.forEach(function(other){ if(other !== item) other.classList.add("dimmed"); });
       });
+      item.addEventListener("mousemove", function(e){
+        var r = item.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        item.style.setProperty("--ry", (px * 14) + "deg");
+        item.style.setProperty("--rx", (-py * 14) + "deg");
+      });
       item.addEventListener("mouseleave", function(){
         item.classList.remove("lifted");
+        item.style.setProperty("--rx", "0deg");
+        item.style.setProperty("--ry", "0deg");
         reelItems.forEach(function(other){ other.classList.remove("dimmed"); });
       });
     });

@@ -2,3 +2,4 @@
 # Keep only assets that are actually referenced by local <video> tags.
 assetts/*.mp4
 !assetts/velasca.mp4
+!assetts/Simone.mp4

@@ -74,6 +74,15 @@
     sweepEls.forEach(function(el){ swIo.observe(el); });
   }
 
+  /* ---------- Nav pill compacts on scroll ---------- */
+  document.addEventListener("DOMContentLoaded", function(){
+    var pill = document.getElementById("navPill");
+    if(!pill) return;
+    function onScroll(){ pill.classList.toggle("scrolled", window.scrollY > 40); }
+    onScroll();
+    document.addEventListener("scroll", onScroll, {passive:true});
+  });
+
   /* ---------- Mobile nav burger ---------- */
   document.addEventListener("DOMContentLoaded", function(){
     var burger = document.getElementById("navBurger");
