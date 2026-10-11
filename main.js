@@ -161,7 +161,7 @@
        reopens the banner.
     --------------------------------------------------------- */
     var CONSENT_KEY = "voximeta_cookie_consent";
-    var META_PIXEL_ID = "1003854249414332";
+    var META_PIXEL_ID = "1786846272506287";
 
     function loadMetaPixel(){
       if(window.fbq) return;
