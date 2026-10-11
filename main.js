@@ -151,44 +151,84 @@
     });
 
     /* ---------------------------------------------------------
-       Cookie consent banner. Stores the choice in localStorage
-       under "voximeta_cookie_consent" ("accepted" / "rejected")
-       and fires a "voximeta:cookieconsent" event with that value
-       on `document` — listen for it before loading the Meta Pixel
-       (or any other non-essential tracking script), e.g.:
-         document.addEventListener("voximeta:cookieconsent", function(e){
-           if(e.detail === "accepted"){ loadMetaPixelHere(); }
-         });
-       and check localStorage.getItem("voximeta_cookie_consent")
-       the same way on pages loaded after the choice was made.
+       Cookie consent banner (injected from here, so it is the same
+       on every page). The choice is stored in localStorage under
+       "voximeta_cookie_consent" ("accepted" / "rejected") and a
+       "voximeta:cookieconsent" event is fired on `document`.
+       The Meta Pixel is loaded ONLY after "accepted" (right after the
+       click and on later visits). Closing the banner with the X
+       counts as "rejected". The footer "Preferenze cookie" link
+       reopens the banner.
     --------------------------------------------------------- */
-    var cookieBanner = document.getElementById("cookieBanner");
-    if(cookieBanner){
-      var CONSENT_KEY = "voximeta_cookie_consent";
-      var existing = null;
-      try{ existing = localStorage.getItem(CONSENT_KEY); }catch(e){}
+    var CONSENT_KEY = "voximeta_cookie_consent";
+    var META_PIXEL_ID = "1003854249414332";
 
-      function fireConsent(value){
-        try{ localStorage.setItem(CONSENT_KEY, value); }catch(e){}
-        document.dispatchEvent(new CustomEvent("voximeta:cookieconsent", {detail: value}));
+    function loadMetaPixel(){
+      if(window.fbq) return;
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', META_PIXEL_ID);
+      fbq('track', 'PageView');
+    }
+
+    var cookieBanner = document.createElement("div");
+    cookieBanner.className = "cookie-banner";
+    cookieBanner.id = "cookieBanner";
+    cookieBanner.setAttribute("role", "dialog");
+    cookieBanner.setAttribute("aria-label", "Preferenze cookie");
+    cookieBanner.innerHTML =
+      '<button type="button" class="cookie-close" id="cookieClose" aria-label="Chiudi (equivale a rifiutare)">&times;</button>' +
+      '<p>Usiamo cookie tecnici necessari al funzionamento del sito e, se acconsenti, cookie di marketing (Meta Pixel) per misurare le campagne. ' +
+      'Puoi cambiare idea in qualsiasi momento da “Preferenze cookie” in fondo alla pagina. ' +
+      '<a href="privacy.html">Cookie e privacy</a></p>' +
+      '<div class="cookie-banner-actions">' +
+        '<button type="button" class="cookie-btn" id="cookieReject">Rifiuta</button>' +
+        '<button type="button" class="cookie-btn" id="cookieAccept">Accetta</button>' +
+      '</div>';
+    document.body.appendChild(cookieBanner);
+
+    function showBanner(){ requestAnimationFrame(function(){ cookieBanner.classList.add("show"); }); }
+
+    function setConsent(value){
+      try{ localStorage.setItem(CONSENT_KEY, value); }catch(e){}
+      cookieBanner.classList.remove("show");
+      if(value === "accepted"){
+        loadMetaPixel();
+      } else if(typeof window.fbq === "function"){
+        window.fbq("consent", "revoke");
       }
+      document.dispatchEvent(new CustomEvent("voximeta:cookieconsent", {detail: value}));
+    }
 
-      if(!existing){
-        requestAnimationFrame(function(){ cookieBanner.classList.add("show"); });
-      } else {
-        fireConsent(existing);
-      }
+    var existing = null;
+    try{ existing = localStorage.getItem(CONSENT_KEY); }catch(e){}
+    if(existing === "accepted"){
+      loadMetaPixel();
+      document.dispatchEvent(new CustomEvent("voximeta:cookieconsent", {detail: existing}));
+    } else if(existing === "rejected"){
+      document.dispatchEvent(new CustomEvent("voximeta:cookieconsent", {detail: existing}));
+    } else {
+      showBanner();
+    }
 
-      var acceptBtn = document.getElementById("cookieAccept");
-      var rejectBtn = document.getElementById("cookieReject");
-      if(acceptBtn) acceptBtn.addEventListener("click", function(){
-        cookieBanner.classList.remove("show");
-        fireConsent("accepted");
-      });
-      if(rejectBtn) rejectBtn.addEventListener("click", function(){
-        cookieBanner.classList.remove("show");
-        fireConsent("rejected");
-      });
+    document.getElementById("cookieAccept").addEventListener("click", function(){ setConsent("accepted"); });
+    document.getElementById("cookieReject").addEventListener("click", function(){ setConsent("rejected"); });
+    document.getElementById("cookieClose").addEventListener("click", function(){ setConsent("rejected"); });
+
+    var footerInner = document.querySelector(".footer-inner-new");
+    if(footerInner){
+      var prefs = document.createElement("a");
+      prefs.href = "#";
+      prefs.className = "footer-prefs";
+      prefs.textContent = "Preferenze cookie";
+      prefs.addEventListener("click", function(e){ e.preventDefault(); showBanner(); });
+      footerInner.appendChild(prefs);
     }
   });
 
