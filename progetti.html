@@ -99,6 +99,54 @@
         </div>
       </div>
       </div>
+      <div class="reveal reels-row2">
+      <div class="reels-marquee">
+        <div class="reels-track">
+          <div class="reel-item">
+            <div class="reel-tile">
+              <video muted loop playsinline preload="metadata" src="assetts/reels/cinoffo.mp4"></video>
+              <a class="reel-shield" href="https://www.instagram.com/p/Dd6jMwLAlkT/" target="_blank" rel="noopener" aria-label="Apri il reel di Cinoffo su Instagram"></a>
+            </div>
+            <div class="reel-caption">Cinoffo</div>
+          </div>
+          <div class="reel-item">
+            <div class="reel-tile">
+              <video muted loop playsinline preload="metadata" src="assetts/reels/ottica-agosta.mp4"></video>
+              <a class="reel-shield" href="https://www.instagram.com/p/DcbnXbGicEl/" target="_blank" rel="noopener" aria-label="Apri il reel di Ottica Agosta su Instagram"></a>
+            </div>
+            <div class="reel-caption">Ottica Agosta</div>
+          </div>
+          <div class="reel-item">
+            <div class="reel-tile">
+              <video muted loop playsinline preload="metadata" src="assetts/reels/patane-gioielli.mp4"></video>
+              <a class="reel-shield" href="https://www.instagram.com/p/Dc8d9kCFVO7/" target="_blank" rel="noopener" aria-label="Apri il reel di Patane Gioielli su Instagram"></a>
+            </div>
+            <div class="reel-caption">Patane Gioielli</div>
+          </div>
+          <div class="reel-item">
+            <div class="reel-tile">
+              <video muted loop playsinline preload="metadata" src="assetts/reels/loftique-catania.mp4"></video>
+              <div class="reel-shield reel-shield--static"></div>
+            </div>
+            <div class="reel-caption">Loftique Catania</div>
+          </div>
+          <div class="reel-item">
+            <div class="reel-tile">
+              <video muted loop playsinline preload="metadata" src="assetts/reels/circolo-velico.mp4"></video>
+              <a class="reel-shield" href="https://www.instagram.com/p/DdHF88CNsj8/" target="_blank" rel="noopener" aria-label="Apri il reel di Circolo Velico su Instagram"></a>
+            </div>
+            <div class="reel-caption">Circolo Velico</div>
+          </div>
+          <div class="reel-item">
+            <div class="reel-tile">
+              <video muted loop playsinline preload="metadata" src="assetts/reels/grasso-carni.mp4"></video>
+              <a class="reel-shield" href="https://www.instagram.com/p/DeJd_Eco5Eo/" target="_blank" rel="noopener" aria-label="Apri il reel di Grasso Carni su Instagram"></a>
+            </div>
+            <div class="reel-caption">Grasso Carni</div>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
 
     <div class="projects-group">
@@ -182,14 +230,15 @@
   /* ---------- Infinite reel ribbon: duplicate the track once so a
      -50% translateX loop is seamless, before anything else wires up
      hover/click on the tiles it contains. ---------- */
-  var reelsTrack = document.getElementById("reelsTrack");
-  if(reelsTrack){
-    reelsTrack.insertAdjacentHTML("beforeend", reelsTrack.innerHTML);
-    var half = reelsTrack.children.length / 2;
-    Array.prototype.slice.call(reelsTrack.children, half).forEach(function(el){
+  var reelsTracks = document.querySelectorAll(".reels-track");
+  reelsTracks.forEach(function(track){
+    track.insertAdjacentHTML("beforeend", track.innerHTML);
+    var half = track.children.length / 2;
+    Array.prototype.slice.call(track.children, half).forEach(function(el){
       el.setAttribute("aria-hidden", "true");
+      el.querySelectorAll("a").forEach(function(a){ a.setAttribute("tabindex", "-1"); });
     });
-  }
+  });
 
   var lightbox = document.getElementById("lightbox");
   var inner = document.getElementById("lightboxInner");
@@ -216,6 +265,7 @@
       var tile = shield.closest(".reel-tile");
       var videoId = shield.dataset.videoId || (tile && tile.dataset.videoId);
       var videoSrc = shield.dataset.videoSrc || (tile && tile.dataset.videoSrc);
+      if(!videoId && !videoSrc) return;
       open(videoId, videoSrc, shield.dataset.wide === "true");
     });
   });
@@ -249,8 +299,8 @@
   /* ---------- Reel ribbon: hovered card lifts like a drawn card and
      tilts toward the cursor, the rest dim, the whole ribbon pauses
      (via CSS :hover). ---------- */
-  if(reelsTrack){
-    var reelItems = reelsTrack.querySelectorAll(".reel-item");
+  reelsTracks.forEach(function(track){
+    var reelItems = track.querySelectorAll(".reel-item");
     reelItems.forEach(function(item){
       item.addEventListener("mouseenter", function(){
         item.classList.add("lifted");
@@ -270,7 +320,7 @@
         reelItems.forEach(function(other){ other.classList.remove("dimmed"); });
       });
     });
-  }
+  });
 })();
 </script>
 

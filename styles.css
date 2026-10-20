@@ -516,6 +516,9 @@ section{padding:220px 0;position:relative;}
   transition:background-color .3s var(--ease);
 }
 .reel-item.lifted .reel-shield::after{background-color:rgba(244,241,236,.26);}
+.reels-row2{margin-top:6px;}
+.reel-shield--static{cursor:default;}
+.reel-shield--static::after{display:none;}
 .reel-caption{
   font-family:var(--font-mono);
   margin-top:10px;color:var(--avorio);font-size:11.5px;font-weight:400;letter-spacing:.01em;
