@@ -183,67 +183,27 @@
   })();
 
   /* ---------------------------------------------------------
-     Eyes cursor (desktop only): over a video tile the pointer
-     becomes a pair of eyes whose pupils follow the movement and
-     drift a little when idle.
+     Parallax: elements with data-parallax="<speed>" drift
+     slightly against the scroll (the story photos).
   --------------------------------------------------------- */
   (function(){
-    if(!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    var SEL = ".vx-tile";
-    var eyes = document.createElement("div");
-    eyes.className = "vx-eyes";
-    eyes.setAttribute("aria-hidden", "true");
-    eyes.innerHTML =
-      '<svg viewBox="0 0 64 48" width="58" height="44">' +
-        '<defs><radialGradient id="vxEyeWhite" cx="45%" cy="35%" r="70%"><stop offset="0" stop-color="#fff"/><stop offset=".75" stop-color="#f3f3f3"/><stop offset="1" stop-color="#d9d9d9"/></radialGradient></defs>' +
-        '<ellipse cx="18" cy="24" rx="12.5" ry="19.5" fill="url(#vxEyeWhite)" stroke="#2a2a2a" stroke-width="1.4"/>' +
-        '<ellipse cx="46" cy="24" rx="12.5" ry="19.5" fill="url(#vxEyeWhite)" stroke="#2a2a2a" stroke-width="1.4"/>' +
-        '<g class="vx-pupil"><circle cx="18" cy="26" r="6.6" fill="#7a4310"/><circle cx="18" cy="26" r="3.4" fill="#140b04"/><circle cx="20.2" cy="23.6" r="1.5" fill="#fff"/></g>' +
-        '<g class="vx-pupil"><circle cx="46" cy="26" r="6.6" fill="#7a4310"/><circle cx="46" cy="26" r="3.4" fill="#140b04"/><circle cx="48.2" cy="23.6" r="1.5" fill="#fff"/></g>' +
-      '</svg>';
-    document.addEventListener("DOMContentLoaded", function(){ document.body.appendChild(eyes); });
-    var pupils = eyes.getElementsByClassName("vx-pupil");
-
-    var x = 0, y = 0, lx = 0, ly = 0, vx = 0, vy = 0, px = 0, py = 0, on = false, raf = 0, t0 = 0;
-    function loop(ts){
-      if(!t0) t0 = ts;
-      vx += ((x - lx) - vx) * .25; vy += ((y - ly) - vy) * .25;
-      lx = x; ly = y;
-      var idle = (ts - t0) / 1000;
-      var tx = Math.max(-4, Math.min(4, vx * .6)) + Math.sin(idle * 1.3) * 1.2;
-      var ty = Math.max(-6, Math.min(6, vy * .6)) + Math.cos(idle * 1.7) * 1.4;
-      px += (tx - px) * .2; py += (ty - py) * .2;
-      for(var i = 0; i < pupils.length; i++) pupils[i].setAttribute("transform", "translate(" + px.toFixed(2) + " " + py.toFixed(2) + ")");
-      eyes.style.transform = "translate3d(" + x + "px," + y + "px,0) translate(-50%,-50%) rotate(" + (Math.sin(idle * 2) * 3).toFixed(2) + "deg)";
-      raf = on ? requestAnimationFrame(loop) : 0;
+    var els = document.querySelectorAll("[data-parallax]");
+    if(!els.length || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+    var ticking = false;
+    function update(){
+      ticking = false;
+      var vh = window.innerHeight;
+      els.forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if(r.bottom < -200 || r.top > vh + 200) return;
+        var offset = (r.top + r.height / 2) - vh / 2;
+        el.style.setProperty("--py", (offset * parseFloat(el.dataset.parallax)).toFixed(1) + "px");
+      });
     }
-    document.addEventListener("pointermove", function(e){
-      x = e.clientX; y = e.clientY;
-      var over = !!(e.target.closest && e.target.closest(SEL));
-      if(over !== on){
-        on = over;
-        eyes.classList.toggle("on", on);
-        root.classList.toggle("vx-eyes-on", on);
-        if(on && !raf){ lx = x; ly = y; t0 = 0; raf = requestAnimationFrame(loop); }
-      }
-    }, {passive:true});
-    document.addEventListener("pointerleave", function(){ on = false; eyes.classList.remove("on"); root.classList.remove("vx-eyes-on"); });
-    /* Re-check what is under the pointer when the page changes under
-       it without the mouse moving (a click opens the lightbox, a scroll). */
-    function recheck(){
-      setTimeout(function(){
-        var el = document.elementFromPoint(x, y);
-        var over = !!(el && el.closest && el.closest(SEL));
-        if(over !== on){
-          on = over;
-          eyes.classList.toggle("on", on);
-          root.classList.toggle("vx-eyes-on", on);
-          if(on && !raf){ lx = x; ly = y; t0 = 0; raf = requestAnimationFrame(loop); }
-        }
-      }, 0);
-    }
-    document.addEventListener("click", recheck, true);
-    window.addEventListener("scroll", recheck, {passive:true, capture:true});
+    function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
+    window.addEventListener("scroll", onScroll, {passive:true});
+    window.addEventListener("resize", onScroll);
+    update();
   })();
 
   /* ---------------------------------------------------------

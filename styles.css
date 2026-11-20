@@ -164,24 +164,16 @@ header.navbar{
   padding:0 14px 0 26px;
   position:relative;
   border-radius:var(--r-lg);
-  background:rgba(168,168,166,.34);
-  -webkit-backdrop-filter:blur(20px) saturate(140%);backdrop-filter:blur(20px) saturate(140%);
+  background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 70%), rgba(140,140,138,.3);
+  -webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);
   border:1px solid rgba(255,255,255,.32);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.4), inset 0 -1px 0 rgba(0,0,0,.05), 0 16px 40px -28px rgba(11,11,11,.35);
   transition:height .5s var(--ease), background .5s var(--ease), box-shadow .5s var(--ease);
 }
 .nav-pill.scrolled{
   height:56px;
-  background:rgba(150,150,148,.42);
+  background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,0) 70%), rgba(128,128,126,.38);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(0,0,0,.06), 0 18px 46px -26px rgba(11,11,11,.42);
-}
-/* Film grain on the glass. */
-.nav-pill::before,
-.mobile-menu::before{
-  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size:160px 160px;
-  opacity:.32;mix-blend-mode:multiply;
 }
 .nav-pill > *{position:relative;z-index:1;}
 
@@ -233,8 +225,8 @@ header.navbar{
 
 .mobile-menu{
   position:absolute;top:calc(100% + 10px);left:0;right:0;
-  background:rgba(168,168,166,.4);
-  -webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);
+  background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 70%), rgba(140,140,138,.36);
+  -webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);
   border:1px solid rgba(255,255,255,.32);border-radius:var(--r-lg);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 30px 60px -36px rgba(11,11,11,.4);
   opacity:0;transform:translateY(-8px);filter:blur(10px);pointer-events:none;
@@ -426,6 +418,70 @@ section{padding:200px 0;position:relative;background:var(--bianco);}
 .cycle-next span{color:var(--sabbia-deep);}
 
 /* ============================================================
+   LA MIA STORIA — scenes with lots of air: photos left, right,
+   full width; short lines instead of blocks of text.
+   ============================================================ */
+#story{padding:110px 0 180px;}
+.story-scene{max-width:var(--max-width);margin:0 auto;padding:0 48px;}
+.story-scene + .story-scene{margin-top:clamp(150px,18vw,280px);}
+
+.story-intro{text-align:center;}
+.story-title{font-size:clamp(52px,8.6vw,138px);font-weight:600;letter-spacing:-.065em;line-height:.95;color:var(--nero);}
+.story-title .accent-serif{font-size:1.18em;}
+
+.story-left{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:end;gap:7vw;}
+.story-right{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);align-items:center;gap:7vw;}
+.story-right .story-line{text-align:right;}
+.story-full{max-width:none;padding:0 14px;}
+.story-center{display:flex;flex-direction:column;align-items:center;gap:80px;text-align:center;}
+.story-quote,.story-outro{text-align:center;}
+.story-outro{display:flex;flex-direction:column;align-items:center;gap:44px;}
+
+.story-photo{position:relative;margin:0;border-radius:var(--r-xl);overflow:hidden;background:var(--nero);
+  box-shadow:0 50px 90px -50px rgba(11,11,11,.45);}
+.story-photo img{width:100%;height:100%;object-fit:cover;display:block;
+  transform:translate3d(0,var(--py,0px),0) scale(1.14);will-change:transform;}
+/* A soft shade at the top so the white line always reads. */
+.story-photo::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg, rgba(0,0,0,.34) 0%, rgba(0,0,0,0) 42%);}
+.story-photo-portrait{aspect-ratio:4/5;}
+.story-photo-full{width:100%;aspect-ratio:16/9;max-height:92vh;}
+.story-photo-center{width:min(560px,82vw);aspect-ratio:4/5;}
+
+/* White type set over the photo, like the reference. */
+.story-photo figcaption{
+  position:absolute;z-index:1;left:8%;right:8%;top:8%;
+  text-align:center;color:var(--bianco);
+  font-size:clamp(20px,2.2vw,34px);font-weight:500;letter-spacing:-.035em;line-height:1.12;
+  text-wrap:balance;
+}
+/* Faces sit high in some photos: their line goes low, on the dark. */
+.story-photo.cap-low::after{background:linear-gradient(0deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,0) 45%);}
+.story-photo.cap-low figcaption{top:auto;bottom:8%;}
+.story-photo-full figcaption{top:10%;font-size:clamp(26px,3.6vw,58px);font-weight:600;letter-spacing:-.05em;}
+
+.story-line{font-size:clamp(28px,3.4vw,50px);font-weight:600;letter-spacing:-.05em;line-height:1.06;color:var(--nero);text-wrap:balance;}
+.story-line .accent-serif{font-size:1.2em;}
+.story-line-center{max-width:16em;margin:0 auto;}
+.story-line-small{font-size:clamp(18px,1.6vw,23px);font-weight:500;letter-spacing:-.02em;line-height:1.55;color:var(--ink-70);}
+.story-line-small.story-line-center{max-width:32em;}
+.story-close{font-size:clamp(36px,5.4vw,84px);font-weight:600;letter-spacing:-.06em;line-height:1;color:var(--nero);margin-top:60px;}
+.story-close .accent-serif{font-size:1.2em;}
+
+@media (max-width:760px){
+  #story{padding:90px 0 130px;}
+  .story-scene{padding:0 20px;}
+  .story-scene + .story-scene{margin-top:120px;}
+  .story-left,.story-right{grid-template-columns:1fr;gap:44px;}
+  .story-right .story-line{text-align:left;}
+  .story-full{padding:0 10px;}
+  .story-photo-full{aspect-ratio:4/5;}
+  .story-photo,.story-photo-full{border-radius:var(--r-lg);}
+  .story-center{gap:52px;}
+  .story-line-small br{display:none;}
+}
+
+/* ============================================================
    CHI SONO
    ============================================================ */
 #about{padding-top:40px;}
@@ -561,7 +617,7 @@ section{padding:200px 0;position:relative;background:var(--bianco);}
    PROJECTS
    ============================================================ */
 #projects{padding-top:190px;counter-reset:group;}
-.projects-head{margin-bottom:140px;text-align:center;}
+.projects-head{margin-bottom:120px;text-align:center;}
 .projects-head h1{font-size:clamp(60px,10vw,156px);font-weight:600;letter-spacing:-.065em;line-height:.95;color:var(--nero);}
 
 .embed-fill{position:absolute;inset:0;width:100%;height:100%;border:0;}
@@ -639,9 +695,9 @@ section{padding:200px 0;position:relative;background:var(--bianco);}
 .folder-sheet.open{opacity:1;pointer-events:auto;}
 .folder-sheet-card{
   position:relative;width:auto;max-width:min(1040px, 100%);max-height:88vh;overflow-y:auto;
-  background:var(--bianco);border:1px solid var(--hairline);border-radius:var(--r-xl);
+  background:var(--bianco);border:1px solid rgba(168,132,74,.16);border-radius:var(--r-xl);
   padding:52px 52px 56px;
-  box-shadow:0 60px 120px -50px rgba(11,11,11,.4);
+  box-shadow:0 0 0 6px rgba(168,132,74,.06), 0 60px 130px -40px rgba(168,132,74,.6), 0 30px 60px -40px rgba(11,11,11,.25);
   transform:translateY(24px) scale(.98);filter:blur(10px);
   transition:transform .55s var(--ease), filter .55s var(--ease);
 }
@@ -662,7 +718,8 @@ section{padding:200px 0;position:relative;background:var(--bianco);}
 .vx-tile{
   position:relative;display:block;width:100%;aspect-ratio:9/16;
   border-radius:var(--r-lg);overflow:hidden;background:var(--nero);
-  box-shadow:0 0 0 1px var(--hairline), 0 30px 50px -34px rgba(11,11,11,.5);
+  box-shadow:0 0 0 1px rgba(11,11,11,.06), 0 4px 10px -4px rgba(11,11,11,.22), 0 22px 40px -18px rgba(11,11,11,.42);
+  transition:scale .7s var(--ease), box-shadow .7s var(--ease);
   opacity:0;filter:blur(12px);transform:translateY(16px);
   animation:tileIn .7s var(--ease) forwards;
   animation-delay:calc(.1s + var(--i, 0) * 55ms);
@@ -734,8 +791,7 @@ section{padding:200px 0;position:relative;background:var(--bianco);}
 .project-card:nth-child(even) .project-desc,
 .project-card:nth-child(even) p.tag{grid-column:1;}
 
-/* ---------- Desktop only: the eyes cursor + mosaic censor. The
-   video can only be watched full screen, by clicking. ---------- */
+/* ---------- Folder tiles: poster, live preview, case label ---------- */
 .vx-tile .vx-poster{width:100%;height:100%;object-fit:cover;}
 .vx-live{position:absolute;inset:0;display:block;opacity:0;transition:opacity .35s var(--ease);}
 .vx-live.on{opacity:1;}
@@ -763,22 +819,14 @@ section{padding:200px 0;position:relative;background:var(--bianco);}
   94%{rotate:1deg;}
 }
 
-/* Desktop only: a custom eyes cursor (main.js) and a mosaic over
-   the playing preview, so the video is really watched only full
-   screen. */
-.vx-eyes{
-  position:fixed;left:0;top:0;z-index:2100;pointer-events:none;
-  opacity:0;transition:opacity .2s var(--ease);
-  filter:drop-shadow(0 6px 12px rgba(11,11,11,.28));
-  will-change:transform;
-}
-.vx-eyes.on{opacity:1;}
-.vx-eyes svg{display:block;}
+/* Desktop hover: the tile grows a little and the playing preview
+   melts into a soft blur, so it is really watched only full screen. */
+.vx-tile .vx-poster,.vx-tile .vx-live{transition:opacity .35s var(--ease), transform .9s var(--ease), filter .9s var(--ease);}
 @media (hover:hover) and (pointer:fine){
-  .vx-tile{cursor:zoom-in;}
-  html.vx-eyes-on .vx-tile{cursor:none;}
+  .vx-tile{cursor:pointer;z-index:0;}
+  .vx-tile:hover{scale:1.045;z-index:2;box-shadow:0 0 0 1px rgba(11,11,11,.06), 0 8px 18px -8px rgba(11,11,11,.25), 0 34px 60px -24px rgba(11,11,11,.5);}
   .vx-tile:hover .vx-poster,
-  .vx-tile:hover .vx-live{filter:url(#vx-mosaic);}
+  .vx-tile:hover .vx-live{transform:scale(1.08);filter:blur(9px);}
   .vx-tile:hover::after{opacity:0;transform:translate(-50%,-50%) scale(.6);}
 }
 
