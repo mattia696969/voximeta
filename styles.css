@@ -418,67 +418,90 @@ section{padding:200px 0;position:relative;background:var(--bianco);}
 .cycle-next span{color:var(--sabbia-deep);}
 
 /* ============================================================
-   LA MIA STORIA — scenes with lots of air: photos left, right,
-   full width; short lines instead of blocks of text.
+   LA MIA STORIA — one close, continuous thread. Photos float in
+   front of the page (they scroll faster than it, main.js sets
+   --py), each carrying its line as white subtitle strips.
    ============================================================ */
-#story{padding:110px 0 180px;}
-.story-scene{max-width:var(--max-width);margin:0 auto;padding:0 48px;}
-.story-scene + .story-scene{margin-top:clamp(150px,18vw,280px);}
+#story{padding:90px 0 170px;}
+.story-wrap{max-width:1000px;margin:0 auto;padding:0 40px;}
 
-.story-intro{text-align:center;}
-.story-title{font-size:clamp(52px,8.6vw,138px);font-weight:600;letter-spacing:-.065em;line-height:.95;color:var(--nero);}
+.story-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.82fr);align-items:center;gap:64px;}
+.story-row-flip{grid-template-columns:minmax(0,.82fr) minmax(0,1fr);}
+.story-row + .story-photo,
+.story-photo + .story-row,
+.story-row + .story-row{margin-top:110px;}
+
+.story-title{font-size:clamp(46px,6.4vw,92px);font-weight:600;letter-spacing:-.06em;line-height:.95;color:var(--nero);margin-bottom:26px;}
 .story-title .accent-serif{font-size:1.18em;}
+.story-line{font-size:clamp(24px,2.6vw,36px);font-weight:600;letter-spacing:-.045em;line-height:1.1;color:var(--nero);text-wrap:balance;}
+.story-small{font-size:clamp(17px,1.4vw,19px);font-weight:500;letter-spacing:-.02em;line-height:1.55;color:var(--ink-70);margin-top:16px;max-width:30em;text-wrap:pretty;}
 
-.story-left{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:end;gap:7vw;}
-.story-right{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);align-items:center;gap:7vw;}
-.story-right .story-line{text-align:right;}
-.story-full{max-width:none;padding:0 14px;}
-.story-center{display:flex;flex-direction:column;align-items:center;gap:80px;text-align:center;}
-.story-quote,.story-outro{text-align:center;}
-.story-outro{display:flex;flex-direction:column;align-items:center;gap:44px;}
-
-.story-photo{position:relative;margin:0;border-radius:var(--r-xl);overflow:hidden;background:var(--nero);
-  box-shadow:0 50px 90px -50px rgba(11,11,11,.45);}
-.story-photo img{width:100%;height:100%;object-fit:cover;display:block;
-  transform:translate3d(0,var(--py,0px),0) scale(1.14);will-change:transform;}
-/* A soft shade at the top so the white line always reads. */
-.story-photo::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(180deg, rgba(0,0,0,.34) 0%, rgba(0,0,0,0) 42%);}
-.story-photo-portrait{aspect-ratio:4/5;}
-.story-photo-full{width:100%;aspect-ratio:16/9;max-height:92vh;}
-.story-photo-center{width:min(560px,82vw);aspect-ratio:4/5;}
-
-/* White type set over the photo, like the reference. */
-.story-photo figcaption{
-  position:absolute;z-index:1;left:8%;right:8%;top:8%;
-  text-align:center;color:var(--bianco);
-  font-size:clamp(20px,2.2vw,34px);font-weight:500;letter-spacing:-.035em;line-height:1.12;
-  text-wrap:balance;
+/* ---------- Floating photos ---------- */
+.story-photo{
+  position:relative;margin:0;
+  translate:0 var(--py, 0px);
+  will-change:translate;
 }
-/* Faces sit high in some photos: their line goes low, on the dark. */
-.story-photo.cap-low::after{background:linear-gradient(0deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,0) 45%);}
-.story-photo.cap-low figcaption{top:auto;bottom:8%;}
-.story-photo-full figcaption{top:10%;font-size:clamp(26px,3.6vw,58px);font-weight:600;letter-spacing:-.05em;}
+.story-photo.reveal{opacity:1;filter:none;transform:none;}
+.story-media{
+  display:block;position:relative;overflow:hidden;
+  border-radius:var(--r-lg);background:var(--nero);
+  box-shadow:0 4px 12px -6px rgba(11,11,11,.25), 0 46px 80px -40px rgba(11,11,11,.5);
+  clip-path:inset(14% 0 0 0 round var(--r-lg));
+  transition:clip-path 1.1s var(--ease);
+}
+.story-media img{width:100%;height:100%;object-fit:cover;display:block;scale:1.12;transition:scale 1.4s var(--ease);}
+.story-photo.is-visible .story-media{clip-path:inset(0 0 0 0 round var(--r-lg));}
+.story-photo.is-visible .story-media img{scale:1.02;}
+.story-photo-portrait .story-media{aspect-ratio:4/5;}
+.story-photo-wide{margin-top:110px;}
+.story-photo-wide .story-media{aspect-ratio:16/9;}
 
-.story-line{font-size:clamp(28px,3.4vw,50px);font-weight:600;letter-spacing:-.05em;line-height:1.06;color:var(--nero);text-wrap:balance;}
-.story-line .accent-serif{font-size:1.2em;}
-.story-line-center{max-width:16em;margin:0 auto;}
-.story-line-small{font-size:clamp(18px,1.6vw,23px);font-weight:500;letter-spacing:-.02em;line-height:1.55;color:var(--ink-70);}
-.story-line-small.story-line-center{max-width:32em;}
-.story-close{font-size:clamp(36px,5.4vw,84px);font-weight:600;letter-spacing:-.06em;line-height:1;color:var(--nero);margin-top:60px;}
+/* ---------- Subtitle strips (reference): black type on white bands,
+   set slightly askew and hanging off the photo's edge; they sit a
+   layer closer than the photo, so they drift a little faster. ---------- */
+.strip{
+  position:absolute;z-index:2;left:-38px;top:34px;
+  display:flex;flex-direction:column;align-items:flex-start;gap:5px;
+  rotate:-2.2deg;
+  translate:0 calc(var(--py, 0px) * .45);
+}
+.strip-right{left:auto;right:-38px;align-items:flex-end;rotate:2deg;}
+.strip span{
+  display:inline-block;background:var(--bianco);color:var(--nero);
+  font-size:clamp(20px,2.2vw,31px);font-weight:600;letter-spacing:-.04em;line-height:1.02;
+  padding:7px 14px 9px;
+  box-shadow:0 10px 24px -12px rgba(11,11,11,.45);
+  opacity:0;transform:translateY(10px);
+  transition:opacity .6s var(--ease), transform .6s var(--ease);
+}
+.story-photo.is-visible .strip span{opacity:1;transform:none;transition-delay:.45s;}
+.story-photo.is-visible .strip span + span{transition-delay:.55s;}
+.story-photo-wide .strip{top:auto;bottom:40px;left:-40px;}
+.story-photo-wide .strip span{font-size:clamp(24px,3vw,42px);}
+
+.story-end{margin-top:120px;text-align:center;}
+.story-end .story-small{margin:0 auto;}
+.story-close{font-size:clamp(34px,4.6vw,66px);font-weight:600;letter-spacing:-.055em;line-height:1;color:var(--nero);margin-top:48px;}
 .story-close .accent-serif{font-size:1.2em;}
 
 @media (max-width:760px){
-  #story{padding:90px 0 130px;}
-  .story-scene{padding:0 20px;}
-  .story-scene + .story-scene{margin-top:120px;}
-  .story-left,.story-right{grid-template-columns:1fr;gap:44px;}
-  .story-right .story-line{text-align:left;}
-  .story-full{padding:0 10px;}
-  .story-photo-full{aspect-ratio:4/5;}
-  .story-photo,.story-photo-full{border-radius:var(--r-lg);}
-  .story-center{gap:52px;}
-  .story-line-small br{display:none;}
+  #story{padding:70px 0 120px;}
+  .story-wrap{padding:0 20px;}
+  .story-row,.story-row-flip{grid-template-columns:1fr;gap:40px;}
+  .story-row-flip .story-photo{order:2;}
+  .story-row + .story-photo,
+  .story-photo + .story-row,
+  .story-row + .story-row,
+  .story-photo-wide{margin-top:80px;}
+  .story-photo-portrait{width:86%;}
+  .story-row .story-photo-portrait{justify-self:end;}
+  .story-row-flip .story-photo-portrait{justify-self:start;}
+  .strip{left:-12px;top:20px;}
+  .strip-right{right:-12px;}
+  .story-photo-wide .strip{left:-8px;bottom:20px;}
+  .story-photo-wide .story-media{aspect-ratio:4/3;}
+  .story-end{margin-top:90px;}
 }
 
 /* ============================================================
