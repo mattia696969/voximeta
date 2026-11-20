@@ -25,7 +25,7 @@
     if(url.pathname === location.pathname && url.hash) return;
     e.preventDefault();
     root.classList.remove("vx-ready");
-    setTimeout(function(){ location.href = a.href; }, 420);
+    setTimeout(function(){ location.href = a.href; }, 300);
   });
 
   /* ---------------------------------------------------------
@@ -64,6 +64,9 @@
      Intro (once per session): the logo animation plays; when the
      logo settles the overlay blurs away and the logo glides up
      into the centre of the nav.
+     The video is drawn onto a canvas with its white keyed out to
+     transparency, so no "video white" rectangle can ever show
+     against the page (phones colour-manage video differently).
   --------------------------------------------------------- */
   (function(){
     if(!root.classList.contains("vx-intro-pending")){ veilOff(); return; }
@@ -73,19 +76,61 @@
     var LOGO = {x:.14605, y:.30625, w:.70921, h:.39792};
     var overlay = document.createElement("div");
     overlay.className = "vx-intro";
-    overlay.innerHTML = '<video class="vx-intro-video" src="assetts/intro/logo-intro.mp4" muted playsinline autoplay preload="auto"></video>';
+    overlay.innerHTML =
+      '<div class="vx-intro-stage">' +
+        '<video class="vx-intro-video" src="assetts/intro/logo-intro.mp4" muted playsinline autoplay preload="auto"></video>' +
+        '<canvas class="vx-intro-canvas" aria-hidden="true"></canvas>' +
+      '</div>';
     document.body.appendChild(overlay);
     veilOff();
 
+    var stage = overlay.querySelector(".vx-intro-stage");
     var video = overlay.querySelector("video");
+    var canvas = overlay.querySelector("canvas");
+    var ctx = null;
+    try{ ctx = canvas.getContext("2d", {willReadFrequently:true}); }catch(e){}
     var done = false;
+    var keyed = false;
+
+    /* Un-composite each frame from white: alpha = 1 - min(r,g,b)/255,
+       colour rescaled so it reads identically on any light page. */
+    function drawFrame(){
+      if(done || !ctx) return;
+      if(video.readyState >= 2){
+        var w = canvas.width, h = canvas.height;
+        try{
+          ctx.drawImage(video, 0, 0, w, h);
+          var img = ctx.getImageData(0, 0, w, h), d = img.data;
+          for(var i = 0; i < d.length; i += 4){
+            var r = d[i], g = d[i+1], b = d[i+2];
+            var m = r < g ? (r < b ? r : b) : (g < b ? g : b);
+            var a = 255 - m;
+            if(a < 6){ d[i+3] = 0; continue; }
+            var k = 255 / a;
+            d[i] = (r - m) * k; d[i+1] = (g - m) * k; d[i+2] = (b - m) * k;
+            d[i+3] = a;
+          }
+          ctx.putImageData(img, 0, 0);
+          if(!keyed){ keyed = true; overlay.classList.add("keyed"); }
+        }catch(e){ ctx = null; return; }
+      }
+      requestAnimationFrame(drawFrame);
+    }
+    function sizeCanvas(){
+      var r = stage.getBoundingClientRect();
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(2, Math.min(1280, Math.round(r.width * dpr)));
+      canvas.height = Math.round(canvas.width * 404 / 1280);
+    }
+    sizeCanvas();
+    requestAnimationFrame(drawFrame);
 
     function finish(){
       if(done) return;
       done = true;
       try{ sessionStorage.setItem("vx_intro", "1"); }catch(e){}
 
-      var vr = video.getBoundingClientRect();
+      var vr = stage.getBoundingClientRect();
       var from = {left: vr.left + LOGO.x * vr.width, top: vr.top + LOGO.y * vr.height, width: LOGO.w * vr.width, height: LOGO.h * vr.height};
       var mark = document.querySelector(".nav-wordmark");
       var navLogo = mark && mark.querySelector("img");
@@ -113,18 +158,18 @@
       requestAnimationFrame(function(){
         var to = navLogo ? navLogo.getBoundingClientRect() : null;
         if(!to || !to.width || !clone.animate){
-          clone.style.transition = "opacity .8s, filter .8s";
+          clone.style.transition = "opacity .6s, filter .6s";
           clone.style.opacity = "0";
           clone.style.filter = "blur(10px)";
-          setTimeout(cleanup, 900);
+          setTimeout(cleanup, 700);
           return;
         }
         var dx = to.left - from.left, dy = to.top - from.top, s = to.width / from.width;
         var anim = clone.animate([
           {transform:"translate(0,0) scale(1)", filter:"blur(0px)"},
-          {offset:.45, filter:"blur(7px)"},
+          {offset:.45, filter:"blur(6px)"},
           {transform:"translate(" + dx + "px," + dy + "px) scale(" + s + ")", filter:"blur(0px)"}
-        ], {duration:1400, easing:"cubic-bezier(.65,0,.15,1)", fill:"forwards"});
+        ], {duration:1050, easing:"cubic-bezier(.65,0,.15,1)", fill:"forwards"});
         anim.onfinish = cleanup;
       });
     }
@@ -135,6 +180,70 @@
     var p = video.play();
     if(p && p.catch) p.catch(function(){ setTimeout(finish, 400); });
     setTimeout(finish, 7000);
+  })();
+
+  /* ---------------------------------------------------------
+     Eyes cursor (desktop only): over a video tile the pointer
+     becomes a pair of eyes whose pupils follow the movement and
+     drift a little when idle.
+  --------------------------------------------------------- */
+  (function(){
+    if(!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var SEL = ".vx-tile";
+    var eyes = document.createElement("div");
+    eyes.className = "vx-eyes";
+    eyes.setAttribute("aria-hidden", "true");
+    eyes.innerHTML =
+      '<svg viewBox="0 0 64 48" width="58" height="44">' +
+        '<defs><radialGradient id="vxEyeWhite" cx="45%" cy="35%" r="70%"><stop offset="0" stop-color="#fff"/><stop offset=".75" stop-color="#f3f3f3"/><stop offset="1" stop-color="#d9d9d9"/></radialGradient></defs>' +
+        '<ellipse cx="18" cy="24" rx="12.5" ry="19.5" fill="url(#vxEyeWhite)" stroke="#2a2a2a" stroke-width="1.4"/>' +
+        '<ellipse cx="46" cy="24" rx="12.5" ry="19.5" fill="url(#vxEyeWhite)" stroke="#2a2a2a" stroke-width="1.4"/>' +
+        '<g class="vx-pupil"><circle cx="18" cy="26" r="6.6" fill="#7a4310"/><circle cx="18" cy="26" r="3.4" fill="#140b04"/><circle cx="20.2" cy="23.6" r="1.5" fill="#fff"/></g>' +
+        '<g class="vx-pupil"><circle cx="46" cy="26" r="6.6" fill="#7a4310"/><circle cx="46" cy="26" r="3.4" fill="#140b04"/><circle cx="48.2" cy="23.6" r="1.5" fill="#fff"/></g>' +
+      '</svg>';
+    document.addEventListener("DOMContentLoaded", function(){ document.body.appendChild(eyes); });
+    var pupils = eyes.getElementsByClassName("vx-pupil");
+
+    var x = 0, y = 0, lx = 0, ly = 0, vx = 0, vy = 0, px = 0, py = 0, on = false, raf = 0, t0 = 0;
+    function loop(ts){
+      if(!t0) t0 = ts;
+      vx += ((x - lx) - vx) * .25; vy += ((y - ly) - vy) * .25;
+      lx = x; ly = y;
+      var idle = (ts - t0) / 1000;
+      var tx = Math.max(-4, Math.min(4, vx * .6)) + Math.sin(idle * 1.3) * 1.2;
+      var ty = Math.max(-6, Math.min(6, vy * .6)) + Math.cos(idle * 1.7) * 1.4;
+      px += (tx - px) * .2; py += (ty - py) * .2;
+      for(var i = 0; i < pupils.length; i++) pupils[i].setAttribute("transform", "translate(" + px.toFixed(2) + " " + py.toFixed(2) + ")");
+      eyes.style.transform = "translate3d(" + x + "px," + y + "px,0) translate(-50%,-50%) rotate(" + (Math.sin(idle * 2) * 3).toFixed(2) + "deg)";
+      raf = on ? requestAnimationFrame(loop) : 0;
+    }
+    document.addEventListener("pointermove", function(e){
+      x = e.clientX; y = e.clientY;
+      var over = !!(e.target.closest && e.target.closest(SEL));
+      if(over !== on){
+        on = over;
+        eyes.classList.toggle("on", on);
+        root.classList.toggle("vx-eyes-on", on);
+        if(on && !raf){ lx = x; ly = y; t0 = 0; raf = requestAnimationFrame(loop); }
+      }
+    }, {passive:true});
+    document.addEventListener("pointerleave", function(){ on = false; eyes.classList.remove("on"); root.classList.remove("vx-eyes-on"); });
+    /* Re-check what is under the pointer when the page changes under
+       it without the mouse moving (a click opens the lightbox, a scroll). */
+    function recheck(){
+      setTimeout(function(){
+        var el = document.elementFromPoint(x, y);
+        var over = !!(el && el.closest && el.closest(SEL));
+        if(over !== on){
+          on = over;
+          eyes.classList.toggle("on", on);
+          root.classList.toggle("vx-eyes-on", on);
+          if(on && !raf){ lx = x; ly = y; t0 = 0; raf = requestAnimationFrame(loop); }
+        }
+      }, 0);
+    }
+    document.addEventListener("click", recheck, true);
+    window.addEventListener("scroll", recheck, {passive:true, capture:true});
   })();
 
   /* ---------------------------------------------------------
@@ -232,6 +341,19 @@
   document.addEventListener("DOMContentLoaded", function(){
     var burger = document.getElementById("navBurger");
     var mobileMenu = document.getElementById("mobileMenu");
+
+    /* Current page gets the filled dot in the mobile menu. */
+    function pageKey(path){
+      var last = (path.split("/").pop() || "index").replace(/\.html$/, "");
+      return last || "index";
+    }
+    if(mobileMenu){
+      var here = pageKey(location.pathname);
+      mobileMenu.querySelectorAll("a[href]").forEach(function(a){
+        var href = a.getAttribute("href");
+        if(href && href !== "#" && pageKey(href) === here) a.setAttribute("aria-current", "page");
+      });
+    }
     if(burger && mobileMenu){
       burger.addEventListener("click", function(){
         var isOpen = mobileMenu.classList.toggle("open");
