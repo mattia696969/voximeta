@@ -7,9 +7,10 @@
 <meta name="description" content="Case study e contenuti realizzati da Voximeta.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="immagini/favicon.png">
 <link rel="stylesheet" href="styles.css">
+<script>(function(){var d=document.documentElement;d.classList.add("vx-js");try{if(!sessionStorage.getItem("vx_intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("vx-intro-pending");}catch(e){}})();</script>
 </head>
 <body>
 <div class="grain-overlay" aria-hidden="true"></div>
@@ -20,7 +21,7 @@
     <a href="https://www.instagram.com/voximeta/" target="_blank" rel="noopener" class="nav-logo-avatar" aria-label="Voximeta su Instagram">
       <img src="immagini/fotoceo.jpg" alt="Voximeta">
     </a>
-    <span class="nav-wordmark">voximeta</span>
+    <a href="index.html" class="nav-wordmark" aria-label="Voximeta, home"><img src="immagini/logo-voximeta.png" alt="voximeta" width="137" height="24"></a>
 
     <ul class="nav-links">
       <li><a href="index.html" class="nav-link"><span class="nl-default">Home</span><span class="nl-hover">Home</span></a></li>
@@ -51,53 +52,79 @@
 
     <div class="projects-group">
       <div class="reels-label reveal">Reel &amp; Ads</div>
-      <div class="reveal">
-      <div class="reels-marquee">
-        <div class="reels-track" id="reelsTrack">
-          <div class="reel-item">
-            <div class="reel-tile" data-video-id="LQMS9wLc1yhv3kFwMImN3I8602UCRZoQLs19EjCtdBlY">
-              <mux-player disable-cookies disable-tracking playback-id="LQMS9wLc1yhv3kFwMImN3I8602UCRZoQLs19EjCtdBlY" stream-type="on-demand" muted loop playsinline preload="metadata" title="Dario Dondoli"></mux-player>
-              <div class="reel-shield"></div>
-            </div>
-            <div class="reel-caption">Dario Dondoli · 126k followers</div>
-          </div>
-          <div class="reel-item">
-            <div class="reel-tile" data-video-id="draE00JUec101CH7016EuxtTmNB00k4DKyiUGhYqZ702WpE8">
-              <mux-player disable-cookies disable-tracking playback-id="draE00JUec101CH7016EuxtTmNB00k4DKyiUGhYqZ702WpE8" stream-type="on-demand" muted loop playsinline preload="metadata" title="Busicraziofm"></mux-player>
-              <div class="reel-shield"></div>
-            </div>
-            <div class="reel-caption">Busicraziofm · 8k followers</div>
-          </div>
-          <div class="reel-item">
-            <div class="reel-tile" data-video-id="5GryMzWEXWF5ZmryUq00uBssi02uZs02QyGT4sq02GpTPjg">
-              <mux-player disable-cookies disable-tracking playback-id="5GryMzWEXWF5ZmryUq00uBssi02uZs02QyGT4sq02GpTPjg" stream-type="on-demand" muted loop playsinline preload="metadata" title="NovaWave"></mux-player>
-              <div class="reel-shield"></div>
-            </div>
-            <div class="reel-caption">NovaWave · 30k followers</div>
-          </div>
-          <div class="reel-item">
-            <div class="reel-tile" data-video-id="bCOnzJo700qLE47TJPfrPIlZHZj7hqCN02Xdv00kPNIXNk">
-              <mux-player disable-cookies disable-tracking playback-id="bCOnzJo700qLE47TJPfrPIlZHZj7hqCN02Xdv00kPNIXNk" stream-type="on-demand" muted loop playsinline preload="metadata" title="Scrollinginfinito"></mux-player>
-              <div class="reel-shield"></div>
-            </div>
-            <div class="reel-caption">Scrollinginfinito · 5k followers</div>
-          </div>
-          <div class="reel-item">
-            <div class="reel-tile" data-video-src="assetts/velasca.mp4">
-              <video muted loop playsinline preload="metadata" src="assetts/velasca.mp4"></video>
-              <div class="reel-shield"></div>
-            </div>
-            <div class="reel-caption">Piccoli Mondi · 27.2k followers</div>
-          </div>
-          <div class="reel-item">
-            <div class="reel-tile" data-video-src="assetts/Simone.mp4">
-              <video muted loop playsinline preload="metadata" src="assetts/Simone.mp4"></video>
-              <div class="reel-shield"></div>
-            </div>
-            <div class="reel-caption">Dddreambaby · 4k followers</div>
-          </div>
-        </div>
-      </div>
+      <div class="folders-grid">
+      <button type="button" class="folder reveal d1" data-name="Dario Dondoli" data-meta="126k followers">
+        <span class="folder-art" aria-hidden="true">
+          <span class="folder-back"></span>
+          <span class="folder-peek"><img src="https://image.mux.com/LQMS9wLc1yhv3kFwMImN3I8602UCRZoQLs19EjCtdBlY/thumbnail.webp?width=540&time=2" alt="" loading="lazy"></span>
+          <span class="folder-front"></span>
+        </span>
+        <span class="folder-name">Dario Dondoli</span>
+        <span class="folder-meta">126k followers · 1 video</span>
+        <span class="folder-items" hidden>
+          <span data-video-id="LQMS9wLc1yhv3kFwMImN3I8602UCRZoQLs19EjCtdBlY" data-thumb="https://image.mux.com/LQMS9wLc1yhv3kFwMImN3I8602UCRZoQLs19EjCtdBlY/thumbnail.webp?width=540&time=2"></span>
+        </span>
+      </button>
+      <button type="button" class="folder reveal d2" data-name="Busicraziofm" data-meta="8k followers">
+        <span class="folder-art" aria-hidden="true">
+          <span class="folder-back"></span>
+          <span class="folder-peek"><img src="https://image.mux.com/draE00JUec101CH7016EuxtTmNB00k4DKyiUGhYqZ702WpE8/thumbnail.webp?width=540&time=2" alt="" loading="lazy"></span>
+          <span class="folder-front"></span>
+        </span>
+        <span class="folder-name">Busicraziofm</span>
+        <span class="folder-meta">8k followers · 1 video</span>
+        <span class="folder-items" hidden>
+          <span data-video-id="draE00JUec101CH7016EuxtTmNB00k4DKyiUGhYqZ702WpE8" data-thumb="https://image.mux.com/draE00JUec101CH7016EuxtTmNB00k4DKyiUGhYqZ702WpE8/thumbnail.webp?width=540&time=2"></span>
+        </span>
+      </button>
+      <button type="button" class="folder reveal d3" data-name="NovaWave" data-meta="30k followers">
+        <span class="folder-art" aria-hidden="true">
+          <span class="folder-back"></span>
+          <span class="folder-peek"><img src="https://image.mux.com/5GryMzWEXWF5ZmryUq00uBssi02uZs02QyGT4sq02GpTPjg/thumbnail.webp?width=540&time=2" alt="" loading="lazy"></span>
+          <span class="folder-front"></span>
+        </span>
+        <span class="folder-name">NovaWave</span>
+        <span class="folder-meta">30k followers · 1 video</span>
+        <span class="folder-items" hidden>
+          <span data-video-id="5GryMzWEXWF5ZmryUq00uBssi02uZs02QyGT4sq02GpTPjg" data-thumb="https://image.mux.com/5GryMzWEXWF5ZmryUq00uBssi02uZs02QyGT4sq02GpTPjg/thumbnail.webp?width=540&time=2"></span>
+        </span>
+      </button>
+      <button type="button" class="folder reveal d1" data-name="Scrollinginfinito" data-meta="5k followers">
+        <span class="folder-art" aria-hidden="true">
+          <span class="folder-back"></span>
+          <span class="folder-peek"><img src="https://image.mux.com/bCOnzJo700qLE47TJPfrPIlZHZj7hqCN02Xdv00kPNIXNk/thumbnail.webp?width=540&time=2" alt="" loading="lazy"></span>
+          <span class="folder-front"></span>
+        </span>
+        <span class="folder-name">Scrollinginfinito</span>
+        <span class="folder-meta">5k followers · 1 video</span>
+        <span class="folder-items" hidden>
+          <span data-video-id="bCOnzJo700qLE47TJPfrPIlZHZj7hqCN02Xdv00kPNIXNk" data-thumb="https://image.mux.com/bCOnzJo700qLE47TJPfrPIlZHZj7hqCN02Xdv00kPNIXNk/thumbnail.webp?width=540&time=2"></span>
+        </span>
+      </button>
+      <button type="button" class="folder reveal d2" data-name="Piccoli Mondi" data-meta="27.2k followers">
+        <span class="folder-art" aria-hidden="true">
+          <span class="folder-back"></span>
+          <span class="folder-peek"><img src="immagini/thumbs/velasca.jpg" alt="" loading="lazy"></span>
+          <span class="folder-front"></span>
+        </span>
+        <span class="folder-name">Piccoli Mondi</span>
+        <span class="folder-meta">27.2k followers · 1 video</span>
+        <span class="folder-items" hidden>
+          <span data-video-src="assetts/velasca.mp4" data-thumb="immagini/thumbs/velasca.jpg"></span>
+        </span>
+      </button>
+      <button type="button" class="folder reveal d3" data-name="Dddreambaby" data-meta="4k followers">
+        <span class="folder-art" aria-hidden="true">
+          <span class="folder-back"></span>
+          <span class="folder-peek"><img src="immagini/thumbs/Simone.jpg" alt="" loading="lazy"></span>
+          <span class="folder-front"></span>
+        </span>
+        <span class="folder-name">Dddreambaby</span>
+        <span class="folder-meta">4k followers · 1 video</span>
+        <span class="folder-items" hidden>
+          <span data-video-src="assetts/Simone.mp4" data-thumb="immagini/thumbs/Simone.jpg"></span>
+        </span>
+      </button>
       </div>
     </div>
 
@@ -158,6 +185,27 @@
   </div>
 </section>
 
+<!-- ================= CARTELLA CLIENTE ================= -->
+<div class="folder-sheet" id="folderSheet" aria-hidden="true">
+  <div class="folder-sheet-card" role="dialog" aria-modal="true" aria-labelledby="folderSheetTitle">
+    <button type="button" class="folder-sheet-close" id="folderSheetClose" aria-label="Chiudi">&times;</button>
+    <p class="folder-sheet-meta" id="folderSheetMeta"></p>
+    <h2 class="folder-sheet-title" id="folderSheetTitle"></h2>
+    <div class="folder-sheet-grid" id="folderSheetGrid"></div>
+  </div>
+</div>
+
+<!-- Mosaic censor used on hover (desktop) -->
+<svg class="vx-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <filter id="vx-mosaic" x="0" y="0" width="1" height="1">
+    <feFlood x="7" y="7" width="2" height="2"/>
+    <feComposite width="16" height="16"/>
+    <feTile result="tiles"/>
+    <feComposite in="SourceGraphic" in2="tiles" operator="in"/>
+    <feMorphology operator="dilate" radius="8"/>
+  </filter>
+</svg>
+
 <!-- ================= LIGHTBOX (audio a schermo intero) ================= -->
 <div class="lightbox" id="lightbox">
   <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Chiudi">&times;</button>
@@ -179,22 +227,21 @@
 (function(){
   "use strict";
 
-  /* ---------- Infinite reel ribbon: duplicate the track once so a
-     -50% translateX loop is seamless, before anything else wires up
-     hover/click on the tiles it contains. ---------- */
-  var reelsTrack = document.getElementById("reelsTrack");
-  if(reelsTrack){
-    reelsTrack.insertAdjacentHTML("beforeend", reelsTrack.innerHTML);
-    var half = reelsTrack.children.length / 2;
-    Array.prototype.slice.call(reelsTrack.children, half).forEach(function(el){
-      el.setAttribute("aria-hidden", "true");
-    });
-  }
-
   var lightbox = document.getElementById("lightbox");
   var inner = document.getElementById("lightboxInner");
   var closeBtn = document.getElementById("lightboxClose");
+  var sheet = document.getElementById("folderSheet");
+  var sheetGrid = document.getElementById("folderSheetGrid");
+  var sheetTitle = document.getElementById("folderSheetTitle");
+  var sheetMeta = document.getElementById("folderSheetMeta");
+  var sheetClose = document.getElementById("folderSheetClose");
 
+  function lockScroll(){ document.body.style.overflow = "hidden"; }
+  function unlockScroll(){
+    if(!lightbox.classList.contains("open") && !sheet.classList.contains("open")) document.body.style.overflow = "";
+  }
+
+  /* ---------- Lightbox: full screen with audio ---------- */
   function open(videoId, videoSrc, wide){
     inner.className = "lightbox-inner" + (wide ? " wide" : "");
     if(videoSrc){
@@ -203,74 +250,67 @@
       inner.innerHTML = '<mux-player disable-cookies disable-tracking playback-id="' + videoId + '" stream-type="on-demand" autoplay preload="auto"></mux-player>';
     }
     lightbox.classList.add("open");
-    document.body.style.overflow = "hidden";
+    lockScroll();
   }
   function close(){
     lightbox.classList.remove("open");
-    document.body.style.overflow = "";
     inner.innerHTML = "";
+    unlockScroll();
   }
 
   document.querySelectorAll(".reel-shield").forEach(function(shield){
     shield.addEventListener("click", function(){
-      var tile = shield.closest(".reel-tile");
-      var videoId = shield.dataset.videoId || (tile && tile.dataset.videoId);
-      var videoSrc = shield.dataset.videoSrc || (tile && tile.dataset.videoSrc);
+      var videoId = shield.dataset.videoId;
+      var videoSrc = shield.dataset.videoSrc;
+      if(!videoId && !videoSrc) return;
       open(videoId, videoSrc, shield.dataset.wide === "true");
     });
   });
   closeBtn.addEventListener("click", close);
   lightbox.addEventListener("click", function(e){ if(e.target === lightbox) close(); });
-  document.addEventListener("keydown", function(e){ if(e.key === "Escape") close(); });
 
-  /* ---------- Case-study cards: soft glow follows the cursor ---------- */
-  document.querySelectorAll(".project-card").forEach(function(card){
-    card.addEventListener("mousemove", function(e){
-      var r = card.getBoundingClientRect();
-      card.style.setProperty("--mx", (e.clientX - r.left) + "px");
-      card.style.setProperty("--my", (e.clientY - r.top) + "px");
+  /* ---------- Client folders: each opens a sheet with that client's
+     videos; a video opens full screen in the lightbox. ---------- */
+  function openFolder(folder){
+    var items = folder.querySelectorAll(".folder-items > span");
+    sheetTitle.textContent = folder.dataset.name;
+    sheetMeta.textContent = folder.dataset.meta + " · " + items.length + " video";
+    sheetGrid.innerHTML = "";
+    sheetGrid.style.setProperty("--cols", Math.min(items.length, 4));
+    items.forEach(function(item, i){
+      var tile = document.createElement("button");
+      tile.type = "button";
+      tile.className = "vx-tile";
+      tile.style.setProperty("--i", i);
+      tile.setAttribute("aria-label", "Guarda il video di " + folder.dataset.name + " a schermo intero");
+      var img = document.createElement("img");
+      img.src = item.dataset.thumb;
+      img.alt = "";
+      tile.appendChild(img);
+      tile.addEventListener("click", function(){ open(item.dataset.videoId, item.dataset.videoSrc, false); });
+      sheetGrid.appendChild(tile);
     });
-  });
-
-  /* ---------- Reel & case-study previews: play only on hover ---------- */
-  document.querySelectorAll(".reel-tile, .project-img, .showcase-video-frame").forEach(function(tile){
-    var player = tile.querySelector("mux-player, video");
-    if(!player) return;
-    tile.addEventListener("mouseenter", function(){
-      var p = player.play();
-      if(p && p.catch) p.catch(function(){});
-    });
-    tile.addEventListener("mouseleave", function(){
-      player.pause();
-      player.currentTime = 0;
-    });
-  });
-
-  /* ---------- Reel ribbon: hovered card lifts like a drawn card and
-     tilts toward the cursor, the rest dim, the whole ribbon pauses
-     (via CSS :hover). ---------- */
-  if(reelsTrack){
-    var reelItems = reelsTrack.querySelectorAll(".reel-item");
-    reelItems.forEach(function(item){
-      item.addEventListener("mouseenter", function(){
-        item.classList.add("lifted");
-        reelItems.forEach(function(other){ if(other !== item) other.classList.add("dimmed"); });
-      });
-      item.addEventListener("mousemove", function(e){
-        var r = item.getBoundingClientRect();
-        var px = (e.clientX - r.left) / r.width - 0.5;
-        var py = (e.clientY - r.top) / r.height - 0.5;
-        item.style.setProperty("--ry", (px * 14) + "deg");
-        item.style.setProperty("--rx", (-py * 14) + "deg");
-      });
-      item.addEventListener("mouseleave", function(){
-        item.classList.remove("lifted");
-        item.style.setProperty("--rx", "0deg");
-        item.style.setProperty("--ry", "0deg");
-        reelItems.forEach(function(other){ other.classList.remove("dimmed"); });
-      });
-    });
+    sheet.classList.add("open");
+    sheet.setAttribute("aria-hidden", "false");
+    lockScroll();
+    sheetClose.focus({preventScroll:true});
   }
+  function closeFolder(){
+    sheet.classList.remove("open");
+    sheet.setAttribute("aria-hidden", "true");
+    unlockScroll();
+  }
+  document.querySelectorAll(".folder").forEach(function(folder){
+    folder.addEventListener("click", function(){ openFolder(folder); });
+  });
+  sheetClose.addEventListener("click", closeFolder);
+  sheet.addEventListener("click", function(e){ if(e.target === sheet) closeFolder(); });
+
+  document.addEventListener("keydown", function(e){
+    if(e.key !== "Escape") return;
+    if(lightbox.classList.contains("open")) close();
+    else if(sheet.classList.contains("open")) closeFolder();
+  });
 })();
 </script>
 

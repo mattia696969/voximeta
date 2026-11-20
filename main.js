@@ -4,6 +4,139 @@
 (function(){
   "use strict";
 
+  var root = document.documentElement;
+  root.classList.add("vx-booted");
+
+  /* ---------------------------------------------------------
+     Page veil: the frosted layer (html::before) melts away on
+     arrival and frosts over again before leaving for another
+     internal page.
+  --------------------------------------------------------- */
+  function veilOff(){ requestAnimationFrame(function(){ root.classList.add("vx-ready"); }); }
+  window.addEventListener("pageshow", function(e){ if(e.persisted) root.classList.add("vx-ready"); });
+  document.addEventListener("click", function(e){
+    var a = e.target.closest && e.target.closest("a");
+    if(!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if(a.target === "_blank" || a.hasAttribute("download")) return;
+    var href = a.getAttribute("href");
+    if(!href || href.charAt(0) === "#" || /^(mailto|tel):/i.test(href)) return;
+    var url = new URL(a.href, location.href);
+    if(url.origin !== location.origin) return;
+    if(url.pathname === location.pathname && url.hash) return;
+    e.preventDefault();
+    root.classList.remove("vx-ready");
+    setTimeout(function(){ location.href = a.href; }, 420);
+  });
+
+  /* ---------------------------------------------------------
+     Hero headline: split into words that rise out of a blur
+     one after another (styles: .hero-title .w).
+  --------------------------------------------------------- */
+  (function(){
+    var title = document.querySelector(".hero-title");
+    if(!title) return;
+    var d = 0;
+    title.setAttribute("aria-label", title.textContent.replace(/\s+/g, " ").trim());
+    title.querySelectorAll(".hero-line").forEach(function(line){
+      line.setAttribute("aria-hidden", "true");
+      Array.prototype.slice.call(line.childNodes).forEach(function(node){
+        if(node.nodeType === 3){
+          var frag = document.createDocumentFragment();
+          node.textContent.split(/(\s+)/).forEach(function(part){
+            if(!part) return;
+            if(/^\s+$/.test(part)){ frag.appendChild(document.createTextNode(part)); return; }
+            var w = document.createElement("span");
+            w.className = "w";
+            w.style.setProperty("--d", d++);
+            w.textContent = part;
+            frag.appendChild(w);
+          });
+          line.replaceChild(frag, node);
+        } else if(node.nodeType === 1){
+          node.classList.add("w");
+          node.style.setProperty("--d", d++);
+        }
+      });
+    });
+  })();
+
+  /* ---------------------------------------------------------
+     Intro (once per session): the logo animation plays; when the
+     logo settles the overlay blurs away and the logo glides up
+     into the centre of the nav.
+  --------------------------------------------------------- */
+  (function(){
+    if(!root.classList.contains("vx-intro-pending")){ veilOff(); return; }
+
+    /* Where the logo sits inside assetts/intro/logo-intro.mp4 once
+       it has settled, as fractions of the frame. */
+    var LOGO = {x:.14605, y:.30625, w:.70921, h:.39792};
+    var overlay = document.createElement("div");
+    overlay.className = "vx-intro";
+    overlay.innerHTML = '<video class="vx-intro-video" src="assetts/intro/logo-intro.mp4" muted playsinline autoplay preload="auto"></video>';
+    document.body.appendChild(overlay);
+    veilOff();
+
+    var video = overlay.querySelector("video");
+    var done = false;
+
+    function finish(){
+      if(done) return;
+      done = true;
+      try{ sessionStorage.setItem("vx_intro", "1"); }catch(e){}
+
+      var vr = video.getBoundingClientRect();
+      var from = {left: vr.left + LOGO.x * vr.width, top: vr.top + LOGO.y * vr.height, width: LOGO.w * vr.width, height: LOGO.h * vr.height};
+      var mark = document.querySelector(".nav-wordmark");
+      var navLogo = mark && mark.querySelector("img");
+
+      var clone = document.createElement("img");
+      clone.src = "immagini/logo-voximeta.png";
+      clone.alt = "";
+      clone.className = "vx-intro-logo";
+      clone.style.left = from.left + "px";
+      clone.style.top = from.top + "px";
+      clone.style.width = from.width + "px";
+      clone.style.height = from.height + "px";
+      document.body.appendChild(clone);
+      if(mark) mark.classList.add("vx-hold");
+
+      root.classList.remove("vx-intro-pending");
+      overlay.classList.add("out");
+
+      function cleanup(){
+        if(mark) mark.classList.remove("vx-hold");
+        clone.remove();
+        overlay.remove();
+      }
+
+      requestAnimationFrame(function(){
+        var to = navLogo ? navLogo.getBoundingClientRect() : null;
+        if(!to || !to.width || !clone.animate){
+          clone.style.transition = "opacity .8s, filter .8s";
+          clone.style.opacity = "0";
+          clone.style.filter = "blur(10px)";
+          setTimeout(cleanup, 900);
+          return;
+        }
+        var dx = to.left - from.left, dy = to.top - from.top, s = to.width / from.width;
+        var anim = clone.animate([
+          {transform:"translate(0,0) scale(1)", filter:"blur(0px)"},
+          {offset:.45, filter:"blur(7px)"},
+          {transform:"translate(" + dx + "px," + dy + "px) scale(" + s + ")", filter:"blur(0px)"}
+        ], {duration:1400, easing:"cubic-bezier(.65,0,.15,1)", fill:"forwards"});
+        anim.onfinish = cleanup;
+      });
+    }
+
+    video.addEventListener("ended", finish);
+    video.addEventListener("error", finish);
+    overlay.addEventListener("click", finish);
+    var p = video.play();
+    if(p && p.catch) p.catch(function(){ setTimeout(finish, 400); });
+    setTimeout(finish, 7000);
+  })();
+
   /* ---------------------------------------------------------
      Web3Forms — each form carries its own access_key value
      directly in its HTML (Brand Audit and Waitlist use separate
