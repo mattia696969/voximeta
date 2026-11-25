@@ -189,7 +189,9 @@ header.navbar{
 .nav-logo-avatar:hover{transform:scale(1.06);box-shadow:0 0 0 3px var(--bianco), 0 0 0 4px var(--sabbia-line);}
 .nav-logo-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
 
-.nav-link{position:relative;display:inline-flex;align-items:center;height:22px;overflow:hidden;}
+/* The clipping box is padded well beyond the text so the blur of the
+   rolling labels has room and never shows a hard edge. */
+.nav-link{position:relative;display:inline-flex;align-items:center;height:40px;padding:0 12px;margin:0 -12px;overflow:hidden;}
 .nav-link .nl-default,
 .nav-link .nl-hover{
   display:flex;align-items:center;
@@ -197,8 +199,8 @@ header.navbar{
   transition:transform .6s var(--ease), opacity .6s var(--ease), filter .6s var(--ease);
 }
 .nav-link .nl-default{color:var(--nero);}
-.nav-link .nl-hover{position:absolute;inset:0;color:var(--sabbia);opacity:0;transform:translateY(100%);filter:blur(4px);}
-.nav-link:hover .nl-default{opacity:0;transform:translateY(-100%);filter:blur(4px);}
+.nav-link .nl-hover{position:absolute;inset:0;padding:0 12px;color:var(--sabbia);opacity:0;transform:translateY(70%);filter:blur(4px);}
+.nav-link:hover .nl-default{opacity:0;transform:translateY(-70%);filter:blur(4px);}
 .nav-link:hover .nl-hover{opacity:1;transform:none;filter:none;}
 .nav-link.denied .nl-default,
 .nav-link.denied .nl-hover{color:var(--sabbia)!important;}
