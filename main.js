@@ -62,8 +62,7 @@
 
   /* ---------------------------------------------------------
      Intro (once per session): the logo animation plays; when the
-     logo settles the overlay blurs away and the logo glides up
-     into the centre of the nav.
+     logo settles the overlay fades out.
      The video is drawn onto a canvas with its white keyed out to
      transparency, so no "video white" rectangle can ever show
      against the page (phones colour-manage video differently).
@@ -71,9 +70,6 @@
   (function(){
     if(!root.classList.contains("vx-intro-pending")){ veilOff(); return; }
 
-    /* Where the logo sits inside assetts/intro/logo-intro.mp4 once
-       it has settled, as fractions of the frame. */
-    var LOGO = {x:.14605, y:.30625, w:.70921, h:.39792};
     var overlay = document.createElement("div");
     overlay.className = "vx-intro";
     overlay.innerHTML =
@@ -125,53 +121,14 @@
     sizeCanvas();
     requestAnimationFrame(drawFrame);
 
+    /* When the logo settles the whole intro simply fades out. */
     function finish(){
       if(done) return;
       done = true;
       try{ sessionStorage.setItem("vx_intro", "1"); }catch(e){}
-
-      var vr = stage.getBoundingClientRect();
-      var from = {left: vr.left + LOGO.x * vr.width, top: vr.top + LOGO.y * vr.height, width: LOGO.w * vr.width, height: LOGO.h * vr.height};
-      var mark = document.querySelector(".nav-wordmark");
-      var navLogo = mark && mark.querySelector("img");
-
-      var clone = document.createElement("img");
-      clone.src = "immagini/logo-voximeta.png";
-      clone.alt = "";
-      clone.className = "vx-intro-logo";
-      clone.style.left = from.left + "px";
-      clone.style.top = from.top + "px";
-      clone.style.width = from.width + "px";
-      clone.style.height = from.height + "px";
-      document.body.appendChild(clone);
-      if(mark) mark.classList.add("vx-hold");
-
       root.classList.remove("vx-intro-pending");
       overlay.classList.add("out");
-
-      function cleanup(){
-        if(mark) mark.classList.remove("vx-hold");
-        clone.remove();
-        overlay.remove();
-      }
-
-      requestAnimationFrame(function(){
-        var to = navLogo ? navLogo.getBoundingClientRect() : null;
-        if(!to || !to.width || !clone.animate){
-          clone.style.transition = "opacity .6s, filter .6s";
-          clone.style.opacity = "0";
-          clone.style.filter = "blur(10px)";
-          setTimeout(cleanup, 700);
-          return;
-        }
-        var dx = to.left - from.left, dy = to.top - from.top, s = to.width / from.width;
-        var anim = clone.animate([
-          {transform:"translate(0,0) scale(1)", filter:"blur(0px)"},
-          {offset:.45, filter:"blur(6px)"},
-          {transform:"translate(" + dx + "px," + dy + "px) scale(" + s + ")", filter:"blur(0px)"}
-        ], {duration:1050, easing:"cubic-bezier(.65,0,.15,1)", fill:"forwards"});
-        anim.onfinish = cleanup;
-      });
+      setTimeout(function(){ overlay.remove(); }, 1000);
     }
 
     video.addEventListener("ended", finish);
